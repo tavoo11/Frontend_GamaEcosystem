@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-d
 import CrearCuenta from './CrearCuenta.jsx';
 import Match from './componentes/Match.jsx';
 import Perfil from './componentes/Perfil';
+import Mensaje from './componentes/Mensaje';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/crear" element={<CrearCuenta />}></Route>
           <Route path="/match"  element={<Match />}></Route>
           <Route path="/perfil" element={<Perfil />} ></Route>
+          <Route path="/mensaje" element={<Mensaje />} ></Route>
           <Route path="*"  element={<Navigate replace to="/" />}></Route>
           </Routes>
       </Router>

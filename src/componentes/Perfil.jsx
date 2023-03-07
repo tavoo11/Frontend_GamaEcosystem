@@ -14,6 +14,12 @@ import Axios from 'axios';
 
 function Perfil () {
     const navigate = useNavigate();
+    //mostrar el chat
+    /* const [mostrarChat, setMostrarChat] = useState(false);
+
+    const toggleChat = () => {
+        setMostrarChat(!mostrarChat);
+    } */
     const [form, setForm] = useState({
         username: "",
         nombre: "",
@@ -72,7 +78,8 @@ function Perfil () {
                 <MDBRow className="justify-content-center align-items-center h-100">
                 <MDBCol lg="9" xl="7">
                 <MDBCard>
-                            <div className="rounded-top text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '200px' }}>
+                            <div className="rounded-top text-white d-flex flex-row"
+                             style={{ backgroundImage: "url('https://mdbootstrap.com/img/new/slides/041.webp')", backgroundSize: 'cover', height: '200px' }}>
                                 <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
                                     <MDBCardImage src={form.perfil.imagen}
                                         alt="Generic placeholder image" className="img" />
@@ -140,6 +147,15 @@ function Perfil () {
                 </MDBCol>
                 </MDBRow>
             </MDBContainer>
+            {/* <div style={{position: "fixed", right: "0", bottom: "10px", }}>
+            <button onClick={toggleChat}>Mensajes</button>
+            {mostrarChat && (
+            <div >
+                <Mensaje style={{width: '100%', height: '100%'}}  />
+            </div>
+                )}
+            
+            </div> */}
         </div>
     )
 }
