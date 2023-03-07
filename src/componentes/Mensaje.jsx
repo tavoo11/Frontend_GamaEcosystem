@@ -24,6 +24,19 @@ function Mensaje(){
         imagen: ''
       }
     });
+    const [usuarios, setUsuarios] = useState([]);
+ //captura lo que se escriba en el input y lo guarda en mensajes
+    function ManejadorInput(event){
+      const {name, value} = event.target;
+      setMensajes (prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+    }
+    //enviar mensaje
+    function enviarMensaje(){
+      mensajes = '';
+    }
     const [mostrarMensaje, setMostrarMensaje] = useState(true)
 
     /* function CerrarChat(){
@@ -46,6 +59,7 @@ function Mensaje(){
             Axios.get(`http://127.0.0.1:8000/usuarioid/${pk}`, config)
                 .then(response => {
                     const data = response.data;
+                    ListaUsuarios();
                     setForm({
                         
                         username: data.username,
@@ -57,6 +71,16 @@ function Mensaje(){
                     });
                 })
                 .catch(error => console.log(error));
+
+          //lista de usuario
+          
+        async function ListaUsuarios() {
+          await Axios.get('http://127.0.0.1:8000/usuarioid/', config).then(res => {
+              const data = res.data;
+              setUsuarios(data);
+            })
+         }
+          
         }
       }
     }, []);
@@ -72,27 +96,30 @@ function Mensaje(){
                   <MDBCard className="mask-custom">
                     <MDBCardBody>
                       <MDBTypography listUnStyled className="mb-0">
-                        <li
+                        <ul>
+                        {usuarios.map(user => (
+                        <li key={user.id}
                           className="p-2 border-bottom"
-                          style={{
+                          style={{ listStyleType:'none',
                             borderBottom: "1px solid rgba(255,255,255,.3) !important",
                           }}
                         >
-                          <a
+                          <a style={{textDecoration: 'none'}}
                             href="#!"
                             className="d-flex justify-content-between link-light"
                           >
                             <div className="d-flex flex-row">
                               <img
-                                src={form.perfil.imagen}
+                                src={user.perfil.imagen}
                                 alt="avatar"
                                 className="rounded-circle d-flex align-self-center me-3 shadow-1-strong"
                                 width="60"
+                                height="60"
                               />
                               <div className="pt-1">
-                                <p className="fw-bold mb-0">{form.nombre} {form.apellidos}</p>
+                                <p className="fw-bold mb-0">{user.nombre} {user.apellidos}</p>
                                 <p className="small text-white">
-                                  Hombe, que hay por ahí?
+                                  {user.perfil.descripcion}
                                 </p>
                               </div>
                             </div>
@@ -102,6 +129,8 @@ function Mensaje(){
                             </div>
                           </a>
                         </li>
+                        ))}
+                        </ul>
                         <li className="p-2 border-bottom">
                           <a
                             href="#!"
@@ -184,9 +213,9 @@ function Mensaje(){
                       </MDBCard>
                     </li>
                     <li className="mb-3">
-                    <MDBTextArea label="Message" name="mensaje" rows={4} />
+                    <MDBTextArea label="Message" name="mensaje" rows={4} onChange={ManejadorInput}/>
                   </li>
-                  <MDBBtn color="light" size="lg" rounded className="float-end">
+                  <MDBBtn color="light" size="lg" rounded className="float-end" onClick={enviarMensaje}>
                     Send
                   </MDBBtn>
                   </MDBTypography>
