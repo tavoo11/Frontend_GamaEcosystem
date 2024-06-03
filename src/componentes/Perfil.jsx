@@ -11,33 +11,26 @@ import { MDBCol,
      MDBCardImage, 
      MDBBtn, MDBTypography } from 'mdb-react-ui-kit';
 import Axios from 'axios';
+import Post from "./Post";
+import NavBar from "./NavBar";
 
 function Perfil () {
     const navigate = useNavigate();
-    //mostrar el chat
-    /* const [mostrarChat, setMostrarChat] = useState(false);
-
-    const toggleChat = () => {
-        setMostrarChat(!mostrarChat);
-    } */
+   
     const [form, setForm] = useState({
         username: "",
-        nombre: "",
-        apellidos:"",
-        genero: "",
-        intereses: "",
-        perfil: {
-            descripcion: "",
-            imagen: ""
-            
-        }
+        firstname: "",
+        lastname:"",
+        birthDate: "",
+        profilePhotoUrl: ""
     });
+    const bird = form.birthDate.slice(0, 10);
 
     useEffect(() => {
         // Obtener token de autenticación del almacenamiento local
         const token = localStorage.getItem("token");
         if(token){
-        let pk = jwt_decode(token).user_id.toString();
+        let pk = jwt_decode(token).userId.toString();
         console.log(pk);
         if (token) {
             // Configurar cabecera de la solicitud
@@ -48,20 +41,17 @@ function Perfil () {
             };
 
             // Realizar solicitud GET a la API para obtener el perfil del usuario
-            Axios.get(`http://127.0.0.1:8000/usuarioid/${pk}`, config)
+            Axios.get(`http://localhost:4000/users/${pk}`, config)
                 .then(response => {
                     const data = response.data;
+                    console.log(data)
                     setForm({
                         
                         username: data.username,
-                        nombre: data.nombre,
-                        apellidos: data.apellidos,
-                        genero: data.genero,
-                        intereses: data.intereses,
-                        perfil: {
-                            descripcion: data.perfil.descripcion,
-                            imagen: data.perfil.imagen
-                        }
+                        firstname: data.firstName,
+                        lastname: data.lastName,
+                        birthDate: data.birthDate,
+                        profilePhotoUrl: data.profilePhotoUrl
                     });
                 })
                 .catch(error => console.log(error));
@@ -73,20 +63,22 @@ function Perfil () {
         navigate("/crear");
     }
     return (
-        <div className="gradient-custom-2" style={{ backgroundColor: '#9de2ff' }}>
+        <div className="gradient-custom-2" style={{ backgroundColor: '#f8f9fa' }}>
             <MDBContainer className="py-5 h-100">
                 <MDBRow className="justify-content-center align-items-center h-100">
                 <MDBCol lg="9" xl="7">
                 <MDBCard>
                             <div className="rounded-top text-white d-flex flex-row"
-                             style={{ backgroundImage: "url('https://mdbootstrap.com/img/new/slides/041.webp')", backgroundSize: 'cover', height: '200px' }}>
+                             style={{ backgroundImage: "url('https://mdbootstrap.com/img/new/slides/041.webp')", backgroundSize: 'cover', height: '250px' }}>
                                 <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
-                                    <MDBCardImage src={form.perfil.imagen}
+                                    <MDBCardImage src={form.profilePhotoUrl}
                                         alt="Generic placeholder image" className="img" />
                                 </div>
                                 <div className="ms-3" style={{ marginTop: '130px' }}>
-                                    <MDBTypography tag="h5">{form.nombre} {form.apellidos}</MDBTypography>
-                                    <MDBCardText>{form.username}</MDBCardText>
+                                    <MDBTypography tag="h5">{form.firstname} {form.lastname}</MDBTypography>
+                                </div>
+                                <div>
+                                <NavBar photoProfile = {form.profilePhotoUrl} />
                                 </div>
                             </div>
                             <br />
@@ -111,37 +103,14 @@ function Perfil () {
                     </div>
                     <MDBCardBody className="text-black p-4">
                         <div className="mb-5">
-                        <p className="lead fw-normal mb-1">Descripción: {form.perfil.descripcion}</p>
+                        <p className="lead fw-normal mb-1">Descripción:</p>
                         <div className="p-4" style={{ backgroundColor: '#f8f9fa' }}>
-                            <MDBCardText className="font-italic mb-1">{form.nombre} {form.apellidos}</MDBCardText>
-                            <MDBCardText className="font-italic mb-1">Genero: {form.genero}</MDBCardText>
-                            <MDBCardText className="font-italic mb-0">Intereses: {form.intereses}</MDBCardText>
+                            <MDBCardText className="font-italic mb-1">{form.firstname} {form.lastname}</MDBCardText>
+                            <MDBCardText className="font-italic mb-1">Fecha De Nacimiento: {bird}</MDBCardText>
+                            <MDBCardText className="font-italic mb-0">Intereses: todavia no tengo nadad aqui</MDBCardText>
                         </div>
                         </div>
-                        <div className="d-flex justify-content-between align-items-center mb-4">
-                        <MDBCardText className="lead fw-normal mb-0">Recent photos</MDBCardText>
-                        <MDBCardText className="mb-0"><a href="#!" className="text-muted">Show all</a></MDBCardText>
-                        </div>
-                        <MDBRow>
-                        <MDBCol className="mb-2">
-                            <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-                            alt="image 1" className="w-100 rounded-3" />
-                        </MDBCol>
-                        <MDBCol className="mb-2">
-                            <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-                            alt="image 1" className="w-100 rounded-3" />
-                        </MDBCol>
-                        </MDBRow>
-                        <MDBRow className="g-2">
-                        <MDBCol className="mb-2">
-                            <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
-                            alt="image 1" className="w-100 rounded-3" />
-                        </MDBCol>
-                        <MDBCol className="mb-2">
-                            <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
-                            alt="image 1" className="w-100 rounded-3" />
-                        </MDBCol>
-                        </MDBRow>
+                        <Post />
                     </MDBCardBody>
                     </MDBCard>
                 </MDBCol>

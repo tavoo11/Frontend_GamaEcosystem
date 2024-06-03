@@ -1,7 +1,7 @@
 import React from "react";
 import './assetss/css/LoginCss.css'
 import { Link } from 'react-router-dom';
-import Axios from 'axios';
+import Axios from './Axios';
 import {
     MDBBtn,
     MDBContainer,
@@ -40,9 +40,9 @@ import {
      // manejadorSubmit();
     
       try {
-        const respuesta = await Axios.post('http://127.0.0.1:8000/login/', paquete);
+        const respuesta = await Axios.post('http://localhost:4000/auth/login', paquete);
         console.log(respuesta);
-        localStorage.setItem('token', respuesta.data.access);
+        localStorage.setItem('token', respuesta.data);
         navigate('/perfil')
       } catch (error) {
         console.error(error);
