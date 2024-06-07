@@ -1,7 +1,7 @@
 import React from "react";
-import './assetss/css/LoginCss.css'
+import '../assetss/css/LoginCss.css'
 import { Link } from 'react-router-dom';
-import Axios from './Axios';
+import Axios from '../Axios';
 import {
     MDBBtn,
     MDBContainer,

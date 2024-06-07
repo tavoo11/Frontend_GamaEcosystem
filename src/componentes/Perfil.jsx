@@ -30,7 +30,7 @@ function Perfil () {
         // Obtener token de autenticación del almacenamiento local
         const token = localStorage.getItem("token");
         if(token){
-        let pk = jwt_decode(token).userId.toString();
+        const pk = jwt_decode(token).userId.toString();
         console.log(pk);
         if (token) {
             // Configurar cabecera de la solicitud
@@ -58,9 +58,9 @@ function Perfil () {
         }
     }
     }, []);
-
+   
     function BotonPerfil() {
-        navigate("/crear");
+        navigate("/crear-post");
     }
     return (
         <div className="gradient-custom-2" style={{ backgroundColor: '#f8f9fa' }}>
@@ -84,7 +84,7 @@ function Perfil () {
                             <br />
                             <div className="p-4 text-black" style={{ backgroundColor: '#f8f9fa' }}>
                                 <MDBBtn outline color="dark" style={{ height: '36px', width: '150px', overflow: 'visible' }} onClick={BotonPerfil}>
-                                    Editar perfil
+                                    Crear Post<i class="bi bi-file-plus-fill"></i>
                                 </MDBBtn>
                         <div className="d-flex justify-content-end text-center py-1">
                         <div>

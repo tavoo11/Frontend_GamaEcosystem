@@ -1,41 +1,74 @@
-import React from 'react'
-import { 
-  MDBCardImage,
+import React, { useEffect, useState } from 'react';
+import {
   MDBCardText,
-  MDBRow,
-  MDBCol,
- } from 'mdb-react-ui-kit'
+} from 'mdb-react-ui-kit';
+import jwtDecode from 'jwt-decode';
+import Axios from '../Axios';
+import BarNav from './BarNav';
+import '../assetss/css/Post.css'; 
 
 function Post() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    let pk = jwtDecode(token).userId.toString();
+
+    if (token) {
+      // Configurar cabecera de la solicitud
+      const config = {
+          headers: {
+              "Authorization": `Token ${token}`
+          }
+      };
+    
+      Axios.get(`http://localhost:4000/post/user/${pk}`, config).then(
+      response => {
+        const data = response.data;
+        console.log(data);
+        setPosts(data);
+      }
+      ).catch(err => console.log(err));
+    }
+
+  }, []);
+
   return (
-    <div>
-    <div className="d-flex justify-content-between align-items-center mb-4">
-        <MDBCardText className="lead fw-normal mb-0 m-5 p-5"><i class="bi bi-caret-right-square-fill"></i></MDBCardText>
-        <MDBCardText className="lead fw-normal mb-0 m-5"><i class="bi bi-camera-reels-fill"></i></MDBCardText>
-        <MDBCardText className="lead fw-normal mb-0 m-5 p-5"><i class="bi bi-card-image"></i></MDBCardText>
-        </div>
-        <MDBRow>
-        <MDBCol className="mb-2">
-            <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-            alt="image 1" className="w-100 rounded-3" />
-        </MDBCol>
-        <MDBCol className="mb-2">
-            <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-            alt="image 1" className="w-100 rounded-3" />
-        </MDBCol>
-        </MDBRow>
-        <MDBRow className="g-2">
-        <MDBCol className="mb-2">
-            <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
-            alt="image 1" className="w-100 rounded-3" />
-        </MDBCol>
-        <MDBCol className="mb-2">
-            <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
-            alt="image 1" className="w-100 rounded-3" />
-        </MDBCol>
-        </MDBRow>
-        </div>
-  )
+    <div className="post-container">
+      {posts.map((post) => {
+        const formattedDate = new Date(post.createdAt).toLocaleDateString();
+        const formattedTime = new Date(post.createdAt).toLocaleTimeString();
+
+        return (
+          <div key={post.id} className="post">
+            <div className="post-content">
+              {post.type === 'video' ? (
+                  <video
+                    src={post.content}
+                    className="w-100 h-100"
+                    controls
+                    onMouseEnter={e => e.target.play()}
+                    onMouseLeave={e => e.target.pause()}
+                  />
+                ) : post.type === 'image' ? (
+                  <img
+                    src={post.content}
+                    alt="post content"
+                    className="w-100 h-100"
+                  />
+                ) : (
+                  <p className="post-text">{post.content}</p>
+              )}
+            </div>
+            <MDBCardText className="post-title">Descripción: {post.title}</MDBCardText>
+            <MDBCardText className="post-date">Publicado: {formattedDate} a las {formattedTime}</MDBCardText>
+            <MDBCardText className="post-type">Tipo: {post.type}</MDBCardText>
+          </div>
+        );
+      })}
+       <BarNav />
+    </div>
+  );
 }
 
-export default Post
+export default Post;

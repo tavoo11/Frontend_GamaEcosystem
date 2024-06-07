@@ -1,0 +1,13 @@
+.bar-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff; /* Puedes cambiar esto al color que prefieras */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Opcional: Añade una sombra para destacar la barra */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* Ajusta el padding según tus necesidades */
+    z-index: 1000; /* Asegúrate de que la barra esté por encima de otros elementos */
+  }
+  
