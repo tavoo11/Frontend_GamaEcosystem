@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import '../assetss/css/mensajeCss.css';
-import jwt_decode from 'jwt-decode';
 import Axios from "axios";
 import Chat from "./Chat";
 import {
@@ -12,14 +11,18 @@ import {
     MDBTypography,
 } from "mdb-react-ui-kit";
 import jwtDecode from 'jwt-decode';
+import io from 'socket.io-client';
+
+const SOCKET_SERVER_URL = 'http://localhost:4000';
 
 function Mensaje() {
     const [conversaciones, setConversaciones] = useState([]);
     const [usuarioChat, setUsuarioChat] = useState(null);
     const [form, setForm] = useState({});
     const [usuarios, setUsuarios] = useState([]);
-    
-    // Obtener el token y el pk del usuario solo una vez
+    const [notifications, setNotifications] = useState([]);
+    const socketRef = useRef(null);
+
     const token = localStorage.getItem("token");
     let pk = jwtDecode(token).userId.toString();
 
@@ -32,6 +35,31 @@ function Mensaje() {
     useEffect(() => {
         obtenerListaUsuarios();
     }, [usuarioChat]);
+
+    useEffect(() => {
+        const socket = io(SOCKET_SERVER_URL, {
+            query: { userId: pk }
+        });
+
+        socketRef.current = socket;
+
+        socket.on('connect', () => {
+            console.log(`Conectado al servidor de WebSocket como usuario ${pk}`);
+        });
+
+        socket.on('receiveMessage', (message) => {
+            console.log('Mensaje recibido del servidor:', message);
+            setNotifications((prevNotifications) => [...prevNotifications, message]);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Desconectado del servidor de WebSocket');
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, [pk]);
 
     async function obtenerPerfilUsuario() {
         try {
@@ -63,6 +91,12 @@ function Mensaje() {
         }
     }
 
+    const handleUserClick = (usuario) => {
+        setUsuarioChat(usuario);
+        // Limpiar las notificaciones para el usuario seleccionado
+        setNotifications(notifications.filter(notification => notification.sender.id !== usuario.id));
+    }
+
     return (
         <MDBContainer fluid className="py-5 gradient-custom">
             <MDBRow>
@@ -82,7 +116,7 @@ function Mensaje() {
                                                 borderBottom: "1px solid rgba(255,255,255,.3) !important",
                                             }}
                                         >
-                                            <a onClick={() => setUsuarioChat(usuario)} style={{ textDecoration: 'none' }}
+                                            <a onClick={() => handleUserClick(usuario)} style={{ textDecoration: 'none' }}
                                                 href="#!"
                                                 className="d-flex justify-content-between link-light"
                                             >
@@ -103,19 +137,16 @@ function Mensaje() {
                                                 </div>
                                                 <div className="pt-1">
                                                     <p className="small mb-1 text-white">Just now</p>
-                                                    <span className="badge bg-danger float-end">1</span>
+                                                    {notifications.some(notification => notification.sender.id === usuario.id) && (
+                                                        <span className="badge bg-danger float-end">
+                                                            {notifications.filter(notification => notification.sender.id=== usuario.id).length}
+                                                        </span>
+                                                    )}
                                                 </div>
                                             </a>
                                         </li>
                                     ))}
                                 </ul>
-                                <li className="p-2 border-bottom">
-                                    <a
-                                        href="#!"
-                                        className="d-flex justify-content-between link-light"
-                                    >
-                                    </a>
-                                </li>
                             </MDBTypography>
                         </MDBCardBody>
                     </MDBCard>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   MDBContainer,
   MDBNavbar,
@@ -13,9 +13,40 @@ import {
   MDBBadge,
 } from 'mdb-react-ui-kit';
 import { useNavigate } from 'react-router-dom';
+import io from 'socket.io-client';
+import jwtDecode from 'jwt-decode';
+
+const SOCKET_SERVER_URL = 'http://localhost:4000';
 
 export default function NavBar({ photoProfile }) {
   const navigate = useNavigate();
+  const [notifications, setNotifications] = useState([]);
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const pk = jwtDecode(token).userId.toString();
+
+    const socket = io(SOCKET_SERVER_URL, {
+      query: { userId: pk }
+    });
+
+    socketRef.current = socket;
+
+    socket.on('connect', () => {
+      console.log(`Conectado al servidor de WebSocket como usuario ${pk}`);
+    });
+
+    socket.on('notification', (notification) => {
+      console.log('Notificación recibida del servidor:', notification);
+      setNotifications((prevNotifications) => [...prevNotifications, notification]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   function logout() {
     localStorage.clear();
     navigate('/');
@@ -23,7 +54,7 @@ export default function NavBar({ photoProfile }) {
 
   return (
     <header>
-      <MDBNavbar expand="lg" light >
+      <MDBNavbar expand="lg" light>
         <MDBContainer fluid className="d-flex justify-content-between">
           <MDBInputGroup tag="form" className="d-flex w-auto mb-3">
             <MDBInput type="search" placeholder="Search" aria-label="Search" />
@@ -34,12 +65,16 @@ export default function NavBar({ photoProfile }) {
                 <MDBDropdown>
                   <MDBDropdownToggle tag="a" className="nav-link" role="button">
                     <i className="bi bi-bell-fill"></i>
-                    <MDBBadge pill color="danger">
-                      1
-                    </MDBBadge>
+                    {notifications.length > 0 && (
+                      <MDBBadge pill color="danger">
+                        {notifications.length}
+                      </MDBBadge>
+                    )}
                   </MDBDropdownToggle>
                   <MDBDropdownMenu>
-                    <MDBDropdownItem link>Notifications</MDBDropdownItem>
+                    {notifications.map((notification, index) => (
+                      <MDBDropdownItem link key={index}>{notification.message}</MDBDropdownItem>
+                    ))}
                   </MDBDropdownMenu>
                 </MDBDropdown>
               </MDBNavbarItem>
@@ -47,12 +82,16 @@ export default function NavBar({ photoProfile }) {
                 <MDBDropdown>
                   <MDBDropdownToggle tag="a" className="nav-link" role="button">
                     <i className="bi bi-wechat"></i>
-                    <MDBBadge pill color="primary">
-                      1
-                    </MDBBadge>
+                    {notifications.length > 0 && (
+                      <MDBBadge pill color="primary">
+                        {notifications.length}
+                      </MDBBadge>
+                    )}
                   </MDBDropdownToggle>
                   <MDBDropdownMenu>
-                    <MDBDropdownItem link>Messages</MDBDropdownItem>
+                    {notifications.map((notification, index) => (
+                      <MDBDropdownItem link key={index}>{notification.message}</MDBDropdownItem>
+                    ))}
                   </MDBDropdownMenu>
                 </MDBDropdown>
               </MDBNavbarItem>

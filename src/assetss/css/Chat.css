@@ -1,0 +1,47 @@
+/* Orientación de los mensajes */
+.message {
+    margin-bottom: 10px;
+    /*background: linear-gradient(to right, #4c24eea4, #2d2adf, #3670dd, #1b87aa);*/
+  }
+
+  .message.div {
+    color: #170e43;
+  }
+
+  .message.sent {
+    text-align: right;
+  }
+  .message p {
+    color: #ffffff; /* Color blanco */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente similar a WhatsApp */
+    font-size: 15px; 
+    border-radius: 16px;/* Radio de borde para dar forma a la burbuja */
+    padding: 5px 15px; /* Espaciado interno */
+    max-width: 70%;
+    }
+
+  .message.sent p {
+    margin-left: auto; /* Alinear a la derecha */
+  }
+
+
+  
+  /* Estilo de los mensajes recibidos */
+  .message.received p {
+    margin-right: auto; /* Alinear a la izquierda */
+  }
+  
+  .message.received {
+    text-align: left;
+  }
+  
+  /* Estilo de scroll */
+  .messages-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .messages-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  

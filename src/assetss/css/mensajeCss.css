@@ -5,21 +5,13 @@
   transform: scale(0.7);
   transform-origin: bottom right; */
     /* fallback for old browsers */
-    background: #fccb90;
+    background: #395399; 
   
     /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(
-      to bottom right,
-      rgba(252, 203, 144, 1),
-      rgba(213, 126, 235, 1)
-    );
+    background: -webkit-linear-gradient(to right, #2d3fc8, #515fc78c, #36a0dd, #1ec1da);
   
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(
-      to bottom right,
-      rgba(252, 203, 144, 1),
-      rgba(213, 126, 235, 1)
-    );
+    background: linear-gradient(to right, #4c24eea4, #2d2adf, #3670dd, #1b87aa);
   }
   
   .mask-custom {
