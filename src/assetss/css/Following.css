@@ -1,0 +1,54 @@
+/* styles.css */
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-height: 100vh;
+    background: linear-gradient(to right, #4c24eea4, #2d2adf, #14a1d0, #1b87aa);
+  }
+  
+  .user-card {
+    width: 100%;
+    max-width: 600px; /* Aumenta el tamaño máximo de las tarjetas */
+    margin-bottom: 20px;
+  }
+  
+  .card.custom-card {
+    border-radius: 30px;
+    background-color: #fff;
+  }
+  
+  .card-body {
+    padding: 20px;
+    background-color: #36a0dd;
+    border-radius: 15px;
+    color: black;
+  }
+  
+  .profile img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid black;
+  }
+  
+  .username-rating {
+    display: flex;
+    align-items: center;
+  }
+  
+  .stars {
+    color: #108214;
+  }
+  
+  .actions .btn {
+    margin-right: 5px;
+  }
+  
+  .actions .btn:last-child {
+    margin-right: 0;
+  }
+  

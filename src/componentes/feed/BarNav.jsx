@@ -2,7 +2,7 @@ import React from 'react'
 import {
     MDBCardText,
   } from 'mdb-react-ui-kit';
-import '../assetss/css/BarNav.css';
+import '../../assetss/css/BarNav.css';
 
 const BarNav = () => {
   return (

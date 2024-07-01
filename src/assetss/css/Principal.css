@@ -1,0 +1,46 @@
+body {
+  background-color: #f7f7f7; /* Color de fondo crema */
+}
+
+.main-page {
+  padding-top: 60px; /* Altura del navbar */
+}
+
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 10%; /* Márgenes laterales del 10% */
+}
+
+.sidebar, .right-sidebar {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 60px; /* Debajo del navbar */
+  height: calc(100vh - 80px); /* Ajustado por los márgenes y el navbar */
+  overflow-y: auto;
+}
+
+.activity-feed {
+  width: 50%; /* Ajustado para dejar espacio entre los contenedores */
+  margin: 0 1%;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 20%;
+}
+
+.right-sidebar {
+  width: 20%;
+}
+
+.activity-feed-content, .blog, .following, .complete-profile, .latest-updates {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px; /* Espacio entre los componentes */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

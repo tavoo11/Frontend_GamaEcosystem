@@ -1,7 +1,7 @@
 import React from "react";
-import '../assetss/css/LoginCss.css'
+import '../../assetss/css/LoginCss.css'
 import { Link } from 'react-router-dom';
-import Axios from '../Axios';
+import Axios from '../../Axios';
 import {
     MDBBtn,
     MDBContainer,
@@ -35,19 +35,34 @@ import {
     const manejadorBoton = async () => {
       const paquete = {
         username: form.username,
-        password: form.password
+        password: form.password,
       };
-     // manejadorSubmit();
     
       try {
         const respuesta = await Axios.post('http://localhost:4000/auth/login', paquete);
-        console.log(respuesta);
-        localStorage.setItem('token', respuesta.data);
-        navigate('/perfil')
+    
+        // Verifica si la respuesta tiene un token
+        if (respuesta.data.token) {
+          const token = respuesta.data.token;
+          localStorage.setItem('token', token);
+          navigate('/perfil');
+        } else {
+          // Maneja errores basados en el contenido de la respuesta
+          alert(respuesta.data.message || 'Error desconocido');
+        }
       } catch (error) {
-        console.error(error);
+        if (error.response) {
+          alert(error.response.data.message || 'Error de autenticación');
+        } else {
+          console.error('Error de red', error);
+          alert('Error de red');
+        }
       }
     };
+    
+    
+    
+    
   
     return (
             <div>

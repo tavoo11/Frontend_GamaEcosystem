@@ -3,9 +3,8 @@ import {
   MDBCardText,
 } from 'mdb-react-ui-kit';
 import jwtDecode from 'jwt-decode';
-import Axios from '../Axios';
-import BarNav from './BarNav';
-import '../assetss/css/Post.css'; 
+import Axios from '../../Axios';
+import '../../assetss/css/Post.css'; 
 
 function Post() {
   const [posts, setPosts] = useState([]);
@@ -40,12 +39,12 @@ function Post() {
         const formattedTime = new Date(post.createdAt).toLocaleTimeString();
 
         return (
-          <div key={post.id} className="post">
+          <div key={post.id} className="post-content">
             <div className="post-content">
               {post.type === 'video' ? (
                   <video
                     src={post.content}
-                    className="w-100 h-100"
+                    className="post-video"
                     controls
                     onMouseEnter={e => e.target.play()}
                     onMouseLeave={e => e.target.pause()}
@@ -54,7 +53,7 @@ function Post() {
                   <img
                     src={post.content}
                     alt="post content"
-                    className="w-100 h-100"
+                    className="post-image"
                   />
                 ) : (
                   <p className="post-text">{post.content}</p>
@@ -66,7 +65,6 @@ function Post() {
           </div>
         );
       })}
-       <BarNav />
     </div>
   );
 }

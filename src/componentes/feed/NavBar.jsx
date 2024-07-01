@@ -15,6 +15,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 import jwtDecode from 'jwt-decode';
+import '../../assetss/css/NavBarCss.css'
 
 const SOCKET_SERVER_URL = 'http://localhost:4000';
 
@@ -54,7 +55,7 @@ export default function NavBar({ photoProfile }) {
 
   return (
     <header>
-      <MDBNavbar expand="lg" light>
+      <MDBNavbar expand="lg" >
         <MDBContainer fluid className="d-flex justify-content-between">
           <MDBInputGroup tag="form" className="d-flex w-auto mb-3">
             <MDBInput type="search" placeholder="Search" aria-label="Search" />

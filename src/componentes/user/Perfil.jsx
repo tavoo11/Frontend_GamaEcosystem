@@ -1,5 +1,5 @@
-import React, { useState, useEffect} from "react";
-import '../assetss/css/LoginCss.css';
+import React, { useState, useEffect, useContext} from "react";
+import '../../assetss/css/LoginCss.css';
 import { useNavigate } from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 import { MDBCol,
@@ -11,12 +11,13 @@ import { MDBCol,
      MDBCardImage, 
      MDBBtn, MDBTypography } from 'mdb-react-ui-kit';
 import Axios from 'axios';
-import Post from "./Post";
-import NavBar from "./NavBar";
+import Post from "../posts/Post";
+import Superior from "../feed/Superior";
+import { UserContext } from '../context/UserContext';
 
 function Perfil () {
     const navigate = useNavigate();
-   
+    const { setUser } = useContext(UserContext);
     const [form, setForm] = useState({
         username: "",
         firstname: "",
@@ -31,7 +32,6 @@ function Perfil () {
         const token = localStorage.getItem("token");
         if(token){
         const pk = jwt_decode(token).userId.toString();
-        console.log(pk);
         if (token) {
             // Configurar cabecera de la solicitud
             const config = {
@@ -53,6 +53,10 @@ function Perfil () {
                         birthDate: data.birthDate,
                         profilePhotoUrl: data.profilePhotoUrl
                     });
+                    setUser({
+                        profilePhotoUrl: data.profilePhotoUrl,
+                        // other user details
+                    });
                 })
                 .catch(error => console.log(error));
         }
@@ -63,8 +67,11 @@ function Perfil () {
         navigate("/crear-post");
     }
     return (
-        <div className="gradient-custom-2" style={{ backgroundColor: '#f8f9fa' }}>
-            <MDBContainer className="py-5 h-100">
+        <div className="gradient-custom-2">
+            <div>
+                <Superior photoProfile = {form.profilePhotoUrl} />
+            </div>
+            <MDBContainer className="py-5 h-100 ">
                 <MDBRow className="justify-content-center align-items-center h-100">
                 <MDBCol lg="9" xl="7">
                 <MDBCard>
@@ -77,9 +84,7 @@ function Perfil () {
                                 <div className="ms-3" style={{ marginTop: '130px' }}>
                                     <MDBTypography tag="h5">{form.firstname} {form.lastname}</MDBTypography>
                                 </div>
-                                <div>
-                                <NavBar photoProfile = {form.profilePhotoUrl} />
-                                </div>
+                                
                             </div>
                             <br />
                             <div className="p-4 text-black" style={{ backgroundColor: '#f8f9fa' }}>
@@ -101,10 +106,11 @@ function Perfil () {
                         </div>
                         </div>
                     </div>
-                    <MDBCardBody className="text-black p-4">
+                    <div className="gradient-custom-2">
+                    <MDBCardBody className="text-black p-4" style={{backgroundColor: 'white'}}>
                         <div className="mb-5">
                         <p className="lead fw-normal mb-1">Descripción:</p>
-                        <div className="p-4" style={{ backgroundColor: '#f8f9fa' }}>
+                        <div className="p-4">
                             <MDBCardText className="font-italic mb-1">{form.firstname} {form.lastname}</MDBCardText>
                             <MDBCardText className="font-italic mb-1">Fecha De Nacimiento: {bird}</MDBCardText>
                             <MDBCardText className="font-italic mb-0">Intereses: todavia no tengo nadad aqui</MDBCardText>
@@ -112,6 +118,7 @@ function Perfil () {
                         </div>
                         <Post />
                     </MDBCardBody>
+                    </div>
                     </MDBCard>
                 </MDBCol>
                 </MDBRow>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '../assetss/css/Chat.css';
+import '../../assetss/css/Chat.css';
 import io from 'socket.io-client';
 import {
   MDBContainer,
@@ -33,7 +33,6 @@ const ChatComponent = ({ usuarioChat }) => {
         }
       });
       const data = await response.json();
-      console.log('Mensajes qeu manda el servidor: ', data);
       setMessages(data);
     };
 
@@ -62,11 +61,9 @@ const ChatComponent = ({ usuarioChat }) => {
   const sendMessage = () => {
     if (message.trim() !== '' && usuarioChat && socketRef.current) {
       const newMessage = { content: message, senderId: Number(pk), receiverId: Number(usuarioChat.id) };
-      console.log('Mensaje enviado:', newMessage);
       socketRef.current.emit('createChat', newMessage);
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       setMessage('');
-      console.log(messages);
     }
   };
 
@@ -93,9 +90,6 @@ const ChatComponent = ({ usuarioChat }) => {
     );
   });
   
-
-  console.log('Todos los mensajes:', messages);
-  console.log('Mensajes filtrados:', filteredMessages);
   return (
     <MDBContainer fluid className="py-5">
       <MDBRow className="d-flex justify-content-center">

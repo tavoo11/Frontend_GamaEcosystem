@@ -1,0 +1,87 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  position: fixed;
+  width: 79%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  margin: 0 10%;
+}
+
+.navbar-left h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.navbar-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.search-form {
+  margin-right: 10px;
+}
+
+.nav-icons {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #000;
+}
+
+.nav-icons li {
+  margin: 0 5px;
+  text-decoration: none;
+}
+
+.navbar-right .bi {
+  font-size: 20px;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.badge {
+  position: relative;
+  top: -10px;
+  left: -10px;
+  color: rgb(63, 11, 185);
+  background-color: aqua;
+}
+
+.bi {
+  color: #000;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #f6f9f7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  list-style: none;
+  text-decoration: none;
+}
+
+.dropdown-menu a{
+  list-style: none;
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000;
+}
+
+.nav-icons li:hover .dropdown-menu {
+  display: block;
+}
