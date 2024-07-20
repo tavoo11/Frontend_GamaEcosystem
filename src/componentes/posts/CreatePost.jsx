@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MDBBtn, MDBBtnGroup, MDBContainer, MDBRow, MDBCard, MDBCardBody, MDBCol, MDBInput } from 'mdb-react-ui-kit';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 
-const CreatePost = () => {
+const CreatePost = ({ type, onClose }) => {
     const [form, setForm] = useState({
         title: "",
         content: null,
-        type: "text",
+        type: type,
         author: ""
     });
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setForm(prevState => ({
+            ...prevState,
+            type: type,
+            content: null // Reset content when type changes
+        }));
+    }, [type]);
 
     const manejadorInput = (event) => {
         const { name, value } = event.target;
@@ -69,6 +77,7 @@ const CreatePost = () => {
                 console.log('enviado', paquete);
                 alert('Post creado con éxito');
                 navigate("/perfil");
+                onClose(); // Cerrar el formulario después de enviar
             }
         } catch (error) {
             console.error(error, form);
@@ -83,18 +92,6 @@ const CreatePost = () => {
                         <MDBCardBody className='px-4'>
                             <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Crear tu Post</h3>
                             <MDBRow>
-                                <h4 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">¿Qué tipo de post quieres crear?</h4>
-                                <MDBBtnGroup>
-                                    <MDBBtn color='info' onClick={manejarTipo('text')}>
-                                        TEXTO
-                                    </MDBBtn>
-                                    <MDBBtn color='info' onClick={manejarTipo('video')}>
-                                        VIDEO
-                                    </MDBBtn>
-                                    <MDBBtn color='info' onClick={manejarTipo('image')}>
-                                        IMAGEN
-                                    </MDBBtn>
-                                </MDBBtnGroup>
                                 <MDBCol md='12' className='mt-4'>
                                     {form.type === 'image' && (
                                         <MDBInput wrapperClass='mb-4' label='Subir Imagen' size='lg' accept="image/*" name="content" type='file' onChange={manejarCambioArchivo} />
@@ -109,7 +106,7 @@ const CreatePost = () => {
                                 <MDBCol md='12'>
                                     <MDBInput wrapperClass='mb-4' label='Título del Post' size='lg' name="title" type='text' onChange={manejadorInput} />
                                 </MDBCol>
-                            </MDBRow>
+                                </MDBRow>
                             <MDBBtn className="mb-4 w-50 gradient-custom-2" size='lg' onClick={manejadorBoton}>Registrar</MDBBtn>
                         </MDBCardBody>
                     </MDBCard>

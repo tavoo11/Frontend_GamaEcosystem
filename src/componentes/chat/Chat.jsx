@@ -1,18 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../../assetss/css/Chat.css';
 import io from 'socket.io-client';
-import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardHeader,
-  MDBCardBody,
-  MDBIcon,
-  MDBBtn,
-  MDBCardFooter,
-  MDBInputGroup,
-} from "mdb-react-ui-kit";
 import jwtDecode from 'jwt-decode';
 
 const SOCKET_SERVER_URL = 'http://localhost:4000';
@@ -21,6 +9,7 @@ const ChatComponent = ({ usuarioChat }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const socketRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
   const token = localStorage.getItem("token");
   const pk = jwtDecode(token).userId.toString();
@@ -58,119 +47,119 @@ const ChatComponent = ({ usuarioChat }) => {
     };
   }, [pk, token, usuarioChat.id]);
 
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   const sendMessage = () => {
     if (message.trim() !== '' && usuarioChat && socketRef.current) {
-      const newMessage = { content: message, senderId: Number(pk), receiverId: Number(usuarioChat.id) };
+      const newMessage = { content: message, senderId: Number(pk), receiverId: Number(usuarioChat.id), createdAt: new Date().toISOString() };
       socketRef.current.emit('createChat', newMessage);
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       setMessage('');
     }
   };
 
+  const formatDate = (date) => {
+    const messageDate = new Date(date);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    if (messageDate.toDateString() === today.toDateString()) {
+      return 'Hoy';
+    } else if (messageDate.toDateString() === yesterday.toDateString()) {
+      return 'Ayer';
+    } else {
+      return messageDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' });
+    }
+  };
+
+  const formatTime = (date) => {
+    const messageDate = new Date(date);
+    return messageDate.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+  };
+
+  const renderMessages = () => {
+    let currentDate = null;
+    return filteredMessages.map((msg, index) => {
+      const formattedDate = formatDate(msg.createdAt);
+      const formattedTime = formatTime(msg.createdAt);
+
+      // Mostrar fecha solo una vez si es el mismo día
+      const showDate = formattedDate !== currentDate;
+      currentDate = formattedDate;
+
+      return (
+        <div key={index}>
+          {showDate && (
+            <div className="message-date-center">
+              {formattedDate}
+            </div>
+          )}
+          <div className={`message ${msg.senderId === Number(pk) ? "sent" : "received"}`}>
+            <div className="message-content" style={{ backgroundColor: msg.senderId === Number(pk) ? "#4c24eea4" : "#161a388c" }}>
+              {msg.content}
+              <span className="message-time">{formattedTime}</span>
+            </div>
+          </div>
+        </div>
+      );
+    });
+  };
+
   const filteredMessages = messages.filter((msg) => {
-    // Normaliza la estructura del mensaje si es necesario
     if (msg.sender && msg.sender.id) {
-      // Si el mensaje tiene una estructura de remitente diferente, normalízala
       msg.senderId = msg.sender.id;
       delete msg.sender;
     }
     if (msg.receiver && msg.receiver.id) {
-      // Si el mensaje tiene una estructura de receptor diferente, normalízala
       msg.receiverId = msg.receiver.id;
       delete msg.receiver;
     }
-  
-    // Ahora puedes trabajar con la estructura unificada
     const senderId = msg.senderId;
     const receiverId = msg.receiverId;
-  
     return (
       (senderId === Number(pk) && receiverId === Number(usuarioChat.id)) ||
       (senderId === Number(usuarioChat.id) && receiverId === Number(pk))
     );
   });
-  
+
   return (
-    <MDBContainer fluid className="py-5">
-      <MDBRow className="d-flex justify-content-center">
-        <MDBCol md="8" lg="6" xl="4">
-          <MDBCard>
-            <MDBCardHeader
-              className="d-flex justify-content-between align-items-center p-3"
-              style={{ borderTop: "4px solid #ffa900" }}
-            >
-              <img
-                src={usuarioChat.profilePhotoUrl}
-                alt="avatar"
-                className="rounded-circle d-flex align-self-center me-3 shadow-1-strong"
-                width="40"
-                height="40"
-              />
-              <h5 className="mb-0">{usuarioChat.firstName} {usuarioChat.lastName}</h5>
-              <div className="d-flex flex-row align-items-center">
-                <MDBIcon
-                  fas
-                  icon="minus"
-                  size="xs"
-                  className="me-3 text-muted"
-                />
-                <MDBIcon
-                  fas
-                  icon="comments"
-                  size="xs"
-                  className="me-3 text-muted"
-                />
-                <MDBIcon
-                  fas
-                  icon="times"
-                  size="xs"
-                  className="me-3 text-muted"
-                />
-              </div>
-            </MDBCardHeader>
-            <div className="messages-container"
-              style={{ position: "relative", height: "400px",
-                overflowY: "auto",
-                scrollBehavior: "smooth",
-                flexDirection: "column-end",}}
-            >
-              <MDBCardBody>
-                {filteredMessages.map((msg, index) => (
-                  <div key={index} className={`message ${msg.senderId === Number(pk) ? "sent" : "received"}`}>
-                   
-                    <div>
-                      <div>
-                        <p
-                         
-                          style={{ backgroundColor: msg.senderId === Number(pk) ? "#4c24eea4" : "#161a388c" }}
-                        >
-                          {msg.content}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </MDBCardBody>
-            </div>
-            <MDBCardFooter className="text-muted d-flex justify-content-start align-items-center p-3">
-              <MDBInputGroup className="mb-0">
-                <input
-                  className="form-control"
-                  placeholder="Mensaje"
-                  type="text"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                />
-                <MDBBtn color="primary" style={{ paddingTop: ".55rem" }} onClick={sendMessage}>
-                <i class="bi bi-arrow-right-circle-fill"></i>
-                </MDBBtn>
-              </MDBInputGroup>
-            </MDBCardFooter>
-          </MDBCard>
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
+    <div className="chat-container">
+      <div className="chat-header">
+        <img
+          src={usuarioChat.profilePhotoUrl}
+          alt="avatar"
+          className="avatar"
+        />
+        <h5>{usuarioChat.firstName} {usuarioChat.lastName}</h5>
+        <div className="chat-icons">
+          <span className="icon-minus"></span>
+          <span className="icon-comments"></span>
+          <span className="icon-times"></span>
+        </div>
+      </div>
+      <div className="messages-container">
+        {renderMessages()}
+        <div ref={messagesEndRef} />
+      </div>
+      <div className="chat-footer">
+        <input
+          className="form-control"
+          placeholder="Mensaje"
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button className="send-button" onClick={sendMessage}>
+          <i className="bi bi-arrow-right-circle-fill"></i>
+        </button>
+      </div>
+    </div>
   );
-}
+};
 
 export default ChatComponent;

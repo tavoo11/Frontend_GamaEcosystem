@@ -30,10 +30,9 @@ const Following = () => {
   }
 
   return (
-    <div className="app-container">
-      <div>
+    <div>
         <Superior />
-      </div>
+    <div className="app-container">
       {usuarios.map(usuario => (
         <ul key={usuario.id} className="user-card" style={{ listStyle: 'none' }}>
           <li>
@@ -74,6 +73,7 @@ const Following = () => {
       <button className="btn btn-success btn-lg btn-block">
         <i className="far fa-clock me-2" /> Terminar
       </button>
+    </div>
     </div>
   );
 }

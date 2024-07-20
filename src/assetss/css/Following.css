@@ -5,6 +5,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
     padding: 20px;
     min-height: 100vh;
     background: linear-gradient(to right, #4c24eea4, #2d2adf, #14a1d0, #1b87aa);
@@ -19,6 +20,7 @@
   .card.custom-card {
     border-radius: 30px;
     background-color: #fff;
+    top: 50px;
   }
   
   .card-body {

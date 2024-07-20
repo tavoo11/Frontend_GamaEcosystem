@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import jwtDecode from 'jwt-decode';
 import '../../assetss/css/Superior.css';
 import { UserContext } from '../context/UserContext';
+import Mensaje from '../chat/Mensaje';
 
 const SOCKET_SERVER_URL = 'http://localhost:4000';
 
@@ -11,7 +12,9 @@ const Superior = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
+  const [showMensaje, setShowMensaje] = useState(false);
   const socketRef = useRef(null);
+  const mensajeRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -43,7 +46,7 @@ const Superior = () => {
   }
 
   function ReturnActivity() {
-    navigate('/principal')
+    navigate('/principal');
   }
 
   function GoProfile() {
@@ -53,6 +56,23 @@ const Superior = () => {
   function GoProfiles() {
     navigate('/following');
   }
+
+  const toggleMensaje = () => {
+    setShowMensaje(!showMensaje);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mensajeRef.current && !mensajeRef.current.contains(event.target)) {
+        setShowMensaje(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [mensajeRef]);
 
   return (
     <header>
@@ -81,25 +101,17 @@ const Superior = () => {
               </ul>
             </li>
             <li>
-              <a href="#">
+              <a href="#" onClick={toggleMensaje}>
                 <i className="bi bi-wechat"></i>
                 {notifications.length > 0 && (
                   <span className="badge badge-primary">{notifications.length}</span>
                 )}
               </a>
-              <ul className="dropdown-menu"> 
-                {notifications.map((notification, index) => (
-                  <li key={index}><img
-                  src={notification.sender.profilePhotoUrl}
-                  className="rounded-circle"
-                  height="45"
-                  width="45"
-                  alt="Avatar"
-                  loading="lazy"
-                /> @{notification.sender.firstName} <h6>te envió un mensaje:</h6> <span>{notification.content} </span></li>
-                  
-                ))}
-              </ul>
+              {showMensaje && (
+                <div ref={mensajeRef}>
+                  <Mensaje />
+                </div>
+              )}
             </li>
             <li>
               <a href="#">
@@ -113,7 +125,7 @@ const Superior = () => {
                 />
               </a>
               <ul className="dropdown-menu">
-                <li><a href="#" >My Profile</a></li>
+                <li><a href="#">My Profile</a></li>
                 <li><a href="#">Settings</a></li>
                 <li><a href="#" onClick={logout}>Logout</a></li>
               </ul>
