@@ -6,12 +6,12 @@ const Blog = () => {
     const blogPosts = [
       {
         image: 'https://www.concienciaeco.com/wp-content/uploads/2015/12/ginkgo-biloba-larbre-aux-mille-ecus-l-21.jpg',
-        title: 'Hermoso Ginkgo florecido',
+        title: 'Condiciones para la siembra del Gingo',
         date: 'May 14, 2019',
       },
       {
         image: 'https://media.traveler.es/photos/61376ce6f00fb1ba8d86755a/master/w_1600%2Cc_limit/141472.jpg',
-        title: 'Hermoso Glicina Japones',
+        title: 'Nuevas herramientas en cultivos Glicina Japones',
         date: 'May 14, 2019',
       },
       {
@@ -23,7 +23,7 @@ const Blog = () => {
   
     return (
       <div className="blog-container">
-        <h4>Blog</h4>
+        <h4>Sugerencias</h4>
         <div className="blog-posts">
           {blogPosts.map((post, index) => (
             <div className="blog-post" key={index}>

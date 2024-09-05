@@ -11,13 +11,15 @@ import {
     MDBCardBody,
     MDBInput,
 } from 'mdb-react-ui-kit';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function CrearCuenta() {
     const [form, setForm] = useState({
         username: "",
         password: "",
         firstName: "",
-        lastName:"",
+        lastName: "",
         email: "",
         birthDate: "",
         profilePhotoUrl: null
@@ -40,7 +42,37 @@ function CrearCuenta() {
         }));
     };
 
+    const validaciones = () => {
+        const { username, password, firstName, lastName, email, birthDate } = form;
+
+        if (!username || !password || !firstName || !lastName || !email || !birthDate) {
+            toast.error('Todos los campos son obligatorios.');
+            return false;
+        }
+
+        if (username.length > 35 || password.length > 35 || firstName.length > 35 || lastName.length > 35) {
+            toast.error('Ningún campo debe tener más de 35 caracteres.');
+            return false;
+        }
+
+        if (!/^[\w]+$/.test(username)) {
+            toast.error('El username debe ser una sola palabra sin espacios.');
+            return false;
+        }
+
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            toast.error('El email no es válido.');
+            return false;
+        }
+
+        // Puedes agregar más validaciones aquí si es necesario
+
+        return true;
+    };
+
     const manejadorBoton = async () => {
+        if (!validaciones()) return;
+
         try {
             // Subir la imagen primero
             let profilePhotoUrl = "";
@@ -63,16 +95,18 @@ function CrearCuenta() {
                 firstName: form.firstName,
                 lastName: form.lastName,
                 birthDate: form.birthDate,
+                role: form.role,
+                position: form.position,
+                phoneNumber: form.phoneNumber,
                 profilePhotoUrl
             };
 
             const respuesta = await axios.post('http://localhost:4000/users/', paquete);
-            console.log(respuesta);
-            console.log('enviado', paquete);
-            alert('Recuerdalo, tu username es:  ' + paquete.username);
+            toast.success('Cuenta creada exitosamente. Recuerda tu username: ' + paquete.username);
             navigate("/");
         } catch (error) {
             console.error(error, form);
+            toast.error('Hubo un error al crear la cuenta. Inténtalo de nuevo.');
         }
     };
 
@@ -85,25 +119,34 @@ function CrearCuenta() {
                             <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Crear tu cuenta</h3>
                             <MDBRow>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Imagen' size='lg' accept="image/*" name="profilePhotoUrl" type='file' onChange={manejarCambioImagen}/>
+                                    <MDBInput wrapperClass='mb-4' label='Imagen' size='lg' accept="image/*" name="profilePhotoUrl" type='file' onChange={manejarCambioImagen} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Username' size='lg' name="username" type='text' onChange={manejadorInput}/>
+                                    <MDBInput wrapperClass='mb-4' label='Username' size='lg' name="username" type='text' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Password' size='lg' name="password" type='password' onChange={manejadorInput}/>
+                                    <MDBInput wrapperClass='mb-4' label='Password' size='lg' name="password" type='password' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Nombres' size='lg' name="firstName" type='text' onChange={manejadorInput}/>
+                                    <MDBInput wrapperClass='mb-4' label='Nombres' size='lg' name="firstName" type='text' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Apellidos' size='lg' name="lastName" type='text' onChange={manejadorInput}/>
+                                    <MDBInput wrapperClass='mb-4' label='Apellidos' size='lg' name="lastName" type='text' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Email' size='lg' name="email" type='email' onChange={manejadorInput}/>
+                                    <MDBInput wrapperClass='mb-4' label='Email' size='lg' name="email" type='email' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Fecha de nacimiento' size='lg' name="birthDate" type='text' placeholder="YYYY-MM-DD" onChange={manejadorInput}/>
+                                    <MDBInput wrapperClass='mb-4' label='Role' size='lg' name="role" type='text' onChange={manejadorInput} />
+                                </MDBCol>
+                                <MDBCol md='6'>
+                                    <MDBInput wrapperClass='mb-4' label='Posicion' size='lg' name="position" type='text' onChange={manejadorInput} />
+                                </MDBCol>
+                                <MDBCol md='6'>
+                                    <MDBInput wrapperClass='mb-4' label='Numero de telefono' size='lg' name="phoneNumber" type='number' onChange={manejadorInput} />
+                                </MDBCol>
+                                <MDBCol md='6'>
+                                    <MDBInput wrapperClass='mb-4' label='Fecha de nacimiento' size='lg' name="birthDate" type='text' placeholder="YYYY-MM-DD" onChange={manejadorInput} />
                                 </MDBCol>
                             </MDBRow>
                             <MDBBtn className="mb-4 w-50 gradient-custom-2" size='lg' onClick={manejadorBoton}>Registrar</MDBBtn>
@@ -111,6 +154,7 @@ function CrearCuenta() {
                     </MDBCard>
                 </MDBRow>
             </MDBContainer>
+            <ToastContainer />
         </div>
     );
 }

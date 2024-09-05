@@ -1,13 +1,9 @@
-import React from 'react';
-import '../../assetss/css/LatestUpdates.css';
+import React from 'react'
 
 const LatestUpdates = () => {
   return (
-    <div className="latest-updates">
-      <h2>Latest Updates</h2>
-      {/* Contenido de las últimas actualizaciones */}
-    </div>
-  );
+    <div>LatestUpdates</div>
+  )
 }
 
-export default LatestUpdates;
+export default LatestUpdates

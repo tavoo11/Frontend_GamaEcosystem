@@ -1,4 +1,4 @@
-.post-container {
+.task-container {
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
@@ -10,14 +10,14 @@
   width: 100%; /* Aumentar el ancho del post-container */
 }
 
-.post-text {
+.task-text {
   font-family: 'Arial', sans-serif; /* Puedes cambiarlo a cualquier fuente que prefieras */
   font-size: 1.2rem; /* Tamaño de la fuente */
-  color: #3693cd; /* Color de la letra */
+  color: #0d3955; /* Color de la letra */
   text-align: center; /* Alineación del texto */
   margin: 20px 0; /* Márgenes superiores e inferiores */
   padding: 80px; /* Espaciado interno */
-  background-color: #6835c1; /* Fondo claro para resaltar el texto */
+  background-color: #d2bef4; /* Fondo claro para resaltar el texto */
   border-radius: 5px; /* Bordes redondeados */
   box-shadow: 0 4px 8px rgba(52, 157, 238, 0.1); /* Sombra ligera para dar un efecto de profundidad */
 }
@@ -82,7 +82,7 @@
   color: #888;
 }
 
-.post-content {
+.task-content {
   margin-bottom: 10px;
 }
 
@@ -104,38 +104,6 @@
   width: 100%;
   height: 320px;
   border-radius: 5px;
-}
-
-/* VideoPlayer.css */
-
-.video-container {
-  position: relative;
-  width: 100%;
-  max-width: 600px;
-  margin: auto;
-}
-
-.video-controls {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  display: flex;
-  gap: 10px;
-}
-
-.video-controls button {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.post-video {
-  width: 100%;
-  height: 320px;
-  
 }
 
 .post-footer {
@@ -166,40 +134,6 @@
   margin-right: 15px;
 }
 
-.post-comments {
-  display: flex;
-  flex-direction: column;
-}
 
-.comment {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-.comment-input {
-  display: flex;
-  margin-top: 10px; 
-}
 
-.comment-input input {
-  flex: 30;
-  margin-right: 10px;
-}
-.comment-input button {
-  padding: 5px 10px;
-}
-
-.comment-content {
-  margin-left: 5px;
-}
-
-.comment-author {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-.comment-text {
-  font-size: 14px;
-  color: #555;
-}
 

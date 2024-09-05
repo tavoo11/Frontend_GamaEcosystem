@@ -54,3 +54,15 @@
     margin-right: 0;
   }
   
+  .sidebar, .right-sidebar {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 60px; /* Debajo del navbar */
+    height: calc(100vh - 80px); /* Ajustado por los márgenes y el navbar */
+    overflow-y: auto;
+  }
+
+  

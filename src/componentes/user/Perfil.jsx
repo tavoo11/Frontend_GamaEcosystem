@@ -23,7 +23,9 @@ function Perfil () {
         firstname: "",
         lastname:"",
         birthDate: "",
-        profilePhotoUrl: ""
+        profilePhotoUrl: "",
+        followers: [],
+        following: []
     });
     const bird = form.birthDate.slice(0, 10);
 
@@ -51,7 +53,10 @@ function Perfil () {
                         firstname: data.firstName,
                         lastname: data.lastName,
                         birthDate: data.birthDate,
-                        profilePhotoUrl: data.profilePhotoUrl
+                        profilePhotoUrl: data.profilePhotoUrl,
+                        role: data.role,
+                        position: data.position,
+                        phoneNumber: data.phoneNumber
                     });
                     setUser({
                         profilePhotoUrl: data.profilePhotoUrl,
@@ -89,20 +94,12 @@ function Perfil () {
                             <br />
                             <div className="p-4 text-black" style={{ backgroundColor: '#f8f9fa' }}>
                                 <MDBBtn outline color="dark" style={{ height: '36px', width: '150px', overflow: 'visible' }} onClick={BotonPerfil}>
-                                    Crear Post<i class="bi bi-file-plus-fill"></i>
+                                    Registrar Plantas<i class="bi bi-file-plus-fill"></i>
                                 </MDBBtn>
                         <div className="d-flex justify-content-end text-center py-1">
                         <div>
-                            <MDBCardText className="mb-1 h5">253</MDBCardText>
-                            <MDBCardText className="small text-muted mb-0">Photos</MDBCardText>
-                        </div>
-                        <div className="px-3">
-                            <MDBCardText className="mb-1 h5">1026</MDBCardText>
-                            <MDBCardText className="small text-muted mb-0">Followers</MDBCardText>
-                        </div>
-                        <div>
-                            <MDBCardText className="mb-1 h5">478</MDBCardText>
-                            <MDBCardText className="small text-muted mb-0">Following</MDBCardText>
+                            <MDBCardText className="mb-1 h5">25</MDBCardText>
+                            <MDBCardText className="small text-muted mb-0">Post</MDBCardText>
                         </div>
                         </div>
                     </div>
@@ -113,7 +110,9 @@ function Perfil () {
                         <div className="p-4">
                             <MDBCardText className="font-italic mb-1">{form.firstname} {form.lastname}</MDBCardText>
                             <MDBCardText className="font-italic mb-1">Fecha De Nacimiento: {bird}</MDBCardText>
-                            <MDBCardText className="font-italic mb-0">Intereses: todavia no tengo nadad aqui</MDBCardText>
+                            <MDBCardText className="font-italic mb-0">Rol: {form.role}</MDBCardText>
+                            <MDBCardText className="font-italic mb-0">Cargo: {form.position}</MDBCardText>
+                            <MDBCardText className="font-italic mb-0">Celular: {form.phoneNumber}</MDBCardText>
                         </div>
                         </div>
                         <Post />

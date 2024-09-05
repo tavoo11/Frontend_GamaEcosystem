@@ -1,6 +1,5 @@
 import React from 'react'
 import Blog from './Blog';
-import CompleteProfile from '../user/CompleteProfile';
 import PhotoFollow from '../user/PhotoFollow';
 import LatestUpdates from '../user/LatestUpdates';
 import ActivityFeed from './ActivityFeed';
@@ -20,8 +19,7 @@ const Principal = () => {
       <ActivityFeed />
     </div>
     <div className="right-sidebar">
-      <CompleteProfile />
-      <LatestUpdates />
+    <LatestUpdates />
     </div>
   </div>
   </div>

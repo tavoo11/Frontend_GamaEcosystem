@@ -14,7 +14,9 @@ const Profiles = () => {
     firstname: "",
     lastname: "",
     birthDate: "",
-    profilePhotoUrl: ""
+    profilePhotoUrl: "",
+    followers: [],
+    following: []
   });
 
   const bird = form.birthDate.slice(0, 10);
@@ -37,7 +39,9 @@ const Profiles = () => {
             firstname: data.firstName,
             lastname: data.lastName,
             birthDate: data.birthDate,
-            profilePhotoUrl: data.profilePhotoUrl
+            profilePhotoUrl: data.profilePhotoUrl,
+            following: data.following,
+            followers: data.followers
           });
         })
         .catch(error => console.log(error));
@@ -92,12 +96,12 @@ const Profiles = () => {
                     <MDBCardText className="small text-muted mb-0">Photos</MDBCardText>
                   </div>
                   <div className="px-3">
-                    <MDBCardText className="mb-1 h5">1026</MDBCardText>
-                    <MDBCardText className="small text-muted mb-0">Followers</MDBCardText>
+                    <MDBCardText className="mb-1 h5">{form.followers.length}</MDBCardText>
+                    <MDBCardText className="small text-muted mb-0">Siguiendo</MDBCardText>
                   </div>
                   <div>
-                    <MDBCardText className="mb-1 h5">478</MDBCardText>
-                    <MDBCardText className="small text-muted mb-0">Following</MDBCardText>
+                    <MDBCardText className="mb-1 h5">{form.following.length}</MDBCardText>
+                    <MDBCardText className="small text-muted mb-0">Seguidores</MDBCardText>
                   </div>
                 </div>
               </div>

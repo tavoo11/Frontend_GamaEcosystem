@@ -1,127 +1,96 @@
-import React from "react";
-import '../../assetss/css/LoginCss.css'
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import '../../assetss/css/LoginCss.css';
+import { Link, useNavigate } from 'react-router-dom';
 import Axios from '../../Axios';
-import {
-    MDBBtn,
-    MDBContainer,
-    MDBRow,
-    MDBCol,
-    MDBInput
-  }
-  from 'mdb-react-ui-kit';
-  import { useState } from 'react';
-  import { useNavigate } from 'react-router-dom';
-  
-  function Login() {
-    const [form, setForm] = useState({
-      username: '',
-      password: ''
-    });
-    const navigate = useNavigate();
-  
-    const manejadorInput = (event) => {
-      const { name, value } = event.target;
-      setForm(prevState => ({
-        ...prevState,
-        [name]: value
-      }));
+import { toast } from 'react-toastify';
+
+function Login() {
+  const [form, setForm] = useState({
+    username: '',
+    password: ''
+  });
+  const navigate = useNavigate();
+
+  const manejadorInput = (event) => {
+    const { name, value } = event.target;
+    setForm(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const manejadorBoton = async (event) => {
+    event.preventDefault();
+    const paquete = {
+      username: form.username,
+      password: form.password,
     };
-  
-   /* const manejadorSubmit = e => {
-      e.preventDefault();
-    };*/
-  
-    const manejadorBoton = async () => {
-      const paquete = {
-        username: form.username,
-        password: form.password,
-      };
-    
-      try {
-        const respuesta = await Axios.post('http://localhost:4000/auth/login', paquete);
-    
-        // Verifica si la respuesta tiene un token
-        if (respuesta.data.token) {
-          const token = respuesta.data.token;
-          localStorage.setItem('token', token);
-          navigate('/perfil');
-        } else {
-          // Maneja errores basados en el contenido de la respuesta
-          alert(respuesta.data.message || 'Error desconocido');
-        }
-      } catch (error) {
-        if (error.response) {
-          alert(error.response.data.message || 'Error de autenticación');
-        } else {
-          console.error('Error de red', error);
-          alert('Error de red');
-        }
+
+    try {
+      const respuesta = await Axios.post('http://localhost:4000/auth/login', paquete);
+
+      if (respuesta.data.token) {
+        const token = respuesta.data.token;
+        localStorage.setItem('token', token);
+        navigate('/perfil');
+        window.location.reload();
+      } else {
+        toast.error(respuesta.data.message || 'Error desconocido');
       }
-    };
-    
-    
-    
-    
-  
-    return (
-            <div>
-                <MDBContainer className="my-5 gradient-form">
-
-                <MDBRow>
-
-                  <MDBCol col='6' className="mb-5">
-                    <div className="d-flex flex-column ms-5">
-
-                      <div className="text-center">
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-                          style={{width: '185px'}} alt="logo" />
-                        <h4 className="mt-1 mb-5 pb-1">Bienvenido a LoveFinder</h4>
-                      </div>
-
-                      <p>Por favor ingresa con tu cuenta</p>
-
-
-                      <MDBInput wrapperClass='mb-4' label='Username' name="username" type='text' onChange={manejadorInput}/>
-                      <MDBInput wrapperClass='mb-4' label='Password' name="password" type='password' onChange={manejadorInput}/>
-
-
-                      <div  className="text-center pt-1 mb-5 pb-1">
-                        <MDBBtn onClick={manejadorBoton} className="mb-4 w-100 gradient-custom-2">Iniciar sesión</MDBBtn>
-                        <a className="text-muted" href="#!">Olvidaste tu contraseña?</a>
-                      </div>
-
-                      <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-                        <p className="mb-0">No tienes una cuenta?  </p>
-                        <Link to="/crear">Registrarse</Link>
-                      </div>
-
-                    </div>
-
-                  </MDBCol>
-
-                  <MDBCol col='6' className="mb-5">
-                    <div className="d-flex flex-column  justify-content-center gradient-custom-2 h-100 mb-4">
-
-                      <div className="text-white px-3 py-4 p-md-5 mx-md-4">
-                        <h4 className="mb-4">"Conectando corazones"</h4>
-                        <p className="small mb-0">Bienvenido a nuestra aplicación de citas, donde podrás conocer gente nueva y encontrar el amor. 
-                        Con una interfaz intuitiva y un sistema de coincidencias sofisticado, estamos seguros de que encontrarás a alguien que sea perfecto para ti.
-                        Nuestra comunidad está formada por personas de todo el mundo, 
-                        lo que te da la oportunidad de conocer a alguien especial sin importar donde estés. 
-                        ¡Regístrate ahora y comienza tu búsqueda de amor hoy mismo!
-                        </p>
-                      </div>
-
-                    </div>
-
-                  </MDBCol>
-
-                </MDBRow>
-
-                </MDBContainer>
-            </div>
-        );
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.message || 'Error de autenticación');
+      } else {
+        console.error('Error de red', error);
+        toast.error('Error de red');
+      }
     }
+  };
 
-export default Login
+  return (
+    <div className="container my-5 gradient-form">
+      <div className="row">
+        <div className="col-6 mb-5">
+          <div className="d-flex flex-column ms-5">
+            <div className="text-center">
+              <img src={`${process.env.PUBLIC_URL}/horizon.jpg`} className="img" alt="logo" />
+              <h4 className="mt-1 mb-5 pb-1">Bienvenido a Horizon</h4>
+            </div>
+            <p>Por favor ingresa con tu cuenta</p>
+            <form onSubmit={manejadorBoton}>
+              <div className="mb-4">
+                <label htmlFor="username">Username</label>
+                <input id="username" name="username" type="text" className="form-control" onChange={manejadorInput} />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="password">Password</label>
+                <input id="password" name="password" type="password" className="form-control" onChange={manejadorInput} />
+              </div>
+              <div className="text-center pt-1 mb-5 pb-1">
+                <button type="submit" className="btn btn-primary mb-4 w-100 gradient-custom-2">Iniciar sesión</button>
+              </div>
+            </form>
+            <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
+              <p className="mb-0">No tienes una cuenta?</p>
+              <Link to="/crear">Registrarse</Link>
+            </div>
+          </div>
+        </div>
+        <div className="col-6 mb-5">
+          <div className="d-flex flex-column justify-content-center gradient-custom-2 h-100 mb-4">
+            <div className="text-white px-3 py-4 p-md-5 mx-md-4">
+              <h4 className="mb-4">"Explora el Futuro Social en Horizon"</h4>
+              <p className="small mb-0">
+                ¡Bienvenidos a Horizon! La plataforma que combina la comunicación virtual y la creación de mundos.
+                Imagina un lugar donde puedes construir, socializar y explorar sin límites. Únete a nosotros en esta aventura virtual,
+                donde puedes interactuar con otras personas y crear conexiones significativas. ¡Descubre un nuevo mundo en Horizon!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Login;

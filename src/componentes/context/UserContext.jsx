@@ -1,4 +1,3 @@
-// src/context/UserContext.js
 import React, { createContext, useState, useEffect } from 'react';
 import Axios from 'axios';
 import jwtDecode from 'jwt-decode';
@@ -7,12 +6,18 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
+    id: '',
     profilePhotoUrl: '',
     username: '',
-    firstname: '',
-    lastname: '',
+    firstName: '',
+    lastName: '',
     birthDate: '',
+    role: '',
+    position: '',
+    phoneNumber: ''
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -20,7 +25,7 @@ export const UserProvider = ({ children }) => {
       const pk = jwtDecode(token).userId.toString();
       const config = {
         headers: {
-          Authorization: `Token ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       };
 
@@ -28,19 +33,30 @@ export const UserProvider = ({ children }) => {
         .then((response) => {
           const data = response.data;
           setUser({
+            id: data.id,
             username: data.username,
-            firstname: data.firstName,
-            lastname: data.lastName,
+            firstName: data.firstName,
+            lastName: data.lastName,
             birthDate: data.birthDate,
             profilePhotoUrl: data.profilePhotoUrl,
+            role: data.role,
+            position: data.position,
+            phoneNumber : data.phoneNumber
           });
+          setLoading(false);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.error(error);
+          setError('Failed to load user data');
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
     }
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, loading, error }}>
       {children}
     </UserContext.Provider>
   );

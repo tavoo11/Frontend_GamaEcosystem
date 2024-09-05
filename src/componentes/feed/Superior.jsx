@@ -4,7 +4,6 @@ import io from 'socket.io-client';
 import jwtDecode from 'jwt-decode';
 import '../../assetss/css/Superior.css';
 import { UserContext } from '../context/UserContext';
-import Mensaje from '../chat/Mensaje';
 
 const SOCKET_SERVER_URL = 'http://localhost:4000';
 
@@ -12,27 +11,29 @@ const Superior = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
-  const [showMensaje, setShowMensaje] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const socketRef = useRef(null);
-  const mensajeRef = useRef(null);
+  const notificationsRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const pk = jwtDecode(token).userId.toString();
+    if (!token) return;
+
+    const { userId } = jwtDecode(token);  // Obtén el ID del usuario del token
 
     const socket = io(SOCKET_SERVER_URL, {
-      query: { userId: pk }
+      query: { userId: userId.toString() }
     });
 
     socketRef.current = socket;
 
     socket.on('connect', () => {
-      console.log(`Conectado al servidor de WebSocket como usuario ${pk}`);
+      console.log(`Conectado al servidor de WebSocket como usuario ${userId}`);
     });
 
-    socket.on('receiveMessage', (receiveMessage) => {
-      console.log('Notificación recibida del servidor:', receiveMessage);
-      setNotifications((prevNotifications) => [...prevNotifications, receiveMessage]);
+    socket.on('receiveNotification', (notification) => {
+      console.log('Notificación recibida del servidor:', notification);
+      setNotifications((prevNotifications) => [...prevNotifications, notification]);
     });
 
     return () => {
@@ -40,31 +41,29 @@ const Superior = () => {
     };
   }, []);
 
-  function logout() {
+  const handleLogout = () => {
     localStorage.clear();
     navigate('/');
-  }
+  };
 
-  function ReturnActivity() {
-    navigate('/principal');
-  }
-
-  function GoProfile() {
-    navigate('/perfil');
-  }
-
-  function GoProfiles() {
-    navigate('/following');
-  }
-
-  const toggleMensaje = () => {
-    setShowMensaje(!showMensaje);
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+    if (!showNotifications) {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const { userId } = jwtDecode(token);
+        if (socketRef.current) {
+          socketRef.current.emit('markNotificationsAsRead', userId);  // Marca las notificaciones como leídas
+        }
+        setNotifications([]);
+      }
+    }
   };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (mensajeRef.current && !mensajeRef.current.contains(event.target)) {
-        setShowMensaje(false);
+      if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
+        setShowNotifications(false);
       }
     };
 
@@ -72,45 +71,29 @@ const Superior = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [mensajeRef]);
+  }, []);
 
   return (
     <header>
       <nav className="navbar">
         <div className="navbar-left">
-          <h1>Red Social</h1>
-        </div>
-        <div className="navbar-center">
-          <i className="bi bi-activity" onClick={ReturnActivity} style={{ margin: '0 30px' }}></i>
-          <i className="bi bi-person-circle" onClick={GoProfile} style={{ margin: '0 30px' }}></i>
-          <i className="bi bi-people-fill" onClick={GoProfiles} style={{ margin: '0 30px' }}></i>
+          <h1>Horizon</h1>
         </div>
         <div className="navbar-right">
-          <form className="search-form">
-            <input type="search" placeholder="Search" aria-label="Search" />
-          </form>
           <ul className="nav-icons">
             <li>
-              <a href="#">
+              <a href="#" onClick={toggleNotifications}>
                 <i className="bi bi-bell-fill"></i>
-              </a>
-              <ul className="dropdown-menu">
-                {notifications.map((notification, index) => (
-                  <li key={index}>{notification.message}</li>
-                ))}
-              </ul>
-            </li>
-            <li>
-              <a href="#" onClick={toggleMensaje}>
-                <i className="bi bi-wechat"></i>
                 {notifications.length > 0 && (
                   <span className="badge badge-primary">{notifications.length}</span>
                 )}
               </a>
-              {showMensaje && (
-                <div ref={mensajeRef}>
-                  <Mensaje />
-                </div>
+              {showNotifications && (
+                <ul className="dropdown-menu" ref={notificationsRef}>
+                  {notifications.map((notification, index) => (
+                    <li key={index}>{notification.message}</li>
+                  ))}
+                </ul>
               )}
             </li>
             <li>
@@ -125,9 +108,7 @@ const Superior = () => {
                 />
               </a>
               <ul className="dropdown-menu">
-                <li><a href="#">My Profile</a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="#" onClick={logout}>Logout</a></li>
+                <li><a href="#" onClick={handleLogout}>Logout</a></li>
               </ul>
             </li>
           </ul>

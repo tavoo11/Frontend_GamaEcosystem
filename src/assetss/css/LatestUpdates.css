@@ -1,4 +1,24 @@
-.latest-updates {
-    padding: 20px;
-  }
-  
+.trend-container {
+  background-color: aliceblue;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.trend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.trend-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.trend-info {
+  font-size: 14px;
+  color: #333;
+}

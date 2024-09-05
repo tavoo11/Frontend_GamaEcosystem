@@ -1,43 +1,42 @@
 .gradient-custom-2 {
-   
   background-color: aliceblue;
   background: white;
-  
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, #2d3fc8, #515fc78c, #36a0dd, #1ec1da);
-  
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, #4c24eea4, #2d2adf, #14a1d0, #1b87aa);
-  
-  
-  @media (min-width: 768px) {
-    .gradient-form {
-      height: 100vh !important;
-    }
-  }
-  @media (min-width: 769px) {
-    .gradient-custom-2 {
-      border-top-right-radius: .3rem;
-      border-bottom-right-radius: .3rem;
-    }
-  }
+  background: -webkit-linear-gradient(to right, #2d3fc8, #515fc78c, #36a0dd, #1ec1da);
+  background: linear-gradient(to right, #4c24eea4, #2d2adf, #14a1d0, #1b87aa);
+}
 
-  .img{
-    width: 150px;
-    height: 170px;
-    z-index: 1;
-    object-fit: cover;
-    opacity: .9;
-    transition: .05s ease;
-    border: 3px solid #fff;
-    border-radius: 10px;
+@media (min-width: 768px) {
+  .gradient-form {
+    height: 100vh !important;
   }
-  .img:hover{
-    cursor: crosshair;
-    width: 400px;
-    height: auto;
-    opacity: 1;
-    filter: contrast(120%);
-  }
+}
 
+@media (min-width: 769px) {
+  .gradient-custom-2 {
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+  }
+}
+
+.img {
+  width: 150px;
+  height: 170px;
+  z-index: 1;
+  object-fit: cover;
+  opacity: .9;
+  transition: .05s ease;
+  border: 3px solid #fff;
+  border-radius: 10px;
+}
+
+.img:hover {
+  cursor: crosshair;
+  width: 400px;
+  height: auto;
+  opacity: 1;
+  filter: contrast(120%);
+}
+
+.small {
+  font: 1em sans-serif;
 }
