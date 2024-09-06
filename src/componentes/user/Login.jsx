@@ -53,37 +53,37 @@ function Login() {
         <div className="col-6 mb-5">
           <div className="d-flex flex-column ms-5">
             <div className="text-center">
-              <img src={`${process.env.PUBLIC_URL}/horizon.jpg`} className="img" alt="logo" />
-              <h4 className="mt-1 mb-5 pb-1">Bienvenido a Horizon</h4>
+              <img src={`${process.env.PUBLIC_URL}/gamalogo.png`} className="img" alt="logo" />
+              <h4 className="mt-1 mb-5 pb-1">Bienvenido a GamaEcosystem</h4>
             </div>
-            <p>Por favor ingresa con tu cuenta</p>
+            <p className="justify-content-center text-bold">Por favor ingresa con tu cuenta</p>
             <form onSubmit={manejadorBoton}>
               <div className="mb-4">
-                <label htmlFor="username">Username</label>
-                <input id="username" name="username" type="text" className="form-control" onChange={manejadorInput} />
+                <label htmlFor="username">Usuario</label>
+                <input id="username" name="username" type="text" className="form-control" placeholder="Ingresa tu usuario" onChange={manejadorInput} />
               </div>
               <div className="mb-4">
-                <label htmlFor="password">Password</label>
-                <input id="password" name="password" type="password" className="form-control" onChange={manejadorInput} />
+                <label htmlFor="password">Constraseña</label>
+                <input id="password" name="password" type="password" className="form-control" placeholder="Ingresa tu constraseña" onChange={manejadorInput} />
               </div>
               <div className="text-center pt-1 mb-5 pb-1">
                 <button type="submit" className="btn btn-primary mb-4 w-100 gradient-custom-2">Iniciar sesión</button>
               </div>
             </form>
             <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-              <p className="mb-0">No tienes una cuenta?</p>
-              <Link to="/crear">Registrarse</Link>
+              <p className="mb-0">¿No tienes una cuenta? </p>
             </div>
+            <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
+              <Link to="/crear">Registrarse</Link>
+            </div>           
           </div>
         </div>
-        <div className="col-6 mb-5">
-          <div className="d-flex flex-column justify-content-center gradient-custom-2 h-100 mb-4">
-            <div className="text-white px-3 py-4 p-md-5 mx-md-4">
-              <h4 className="mb-4">"Explora el Futuro Social en Horizon"</h4>
-              <p className="small mb-0">
-                ¡Bienvenidos a Horizon! La plataforma que combina la comunicación virtual y la creación de mundos.
-                Imagina un lugar donde puedes construir, socializar y explorar sin límites. Únete a nosotros en esta aventura virtual,
-                donde puedes interactuar con otras personas y crear conexiones significativas. ¡Descubre un nuevo mundo en Horizon!
+        <div className="col-6 mb-2">
+          <div className="d-flex flex-column justify-content-center h-100 mb-4">
+            <div className="text-black px-3 py-4 p-md-5 mx-md-4">
+              <h4 className="mb-4">GamaEcosystem</h4>
+              <p className="mb-0">
+                GamaEcosystem es una aplicación dedicada al manejo de plantas y jardines. Te permite registrar y organizar tus plantas, así como recibir consejos y recordatorios para su cuidado. Además, podrás compartir tus experiencias y conocimientos con otros amantes de la jardinería en nuestra comunidad. ¡Únete a GamaEcosistem y descubre un mundo verde lleno de vida!
               </p>
             </div>
           </div>

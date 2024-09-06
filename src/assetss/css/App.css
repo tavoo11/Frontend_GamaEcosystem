@@ -37,7 +37,8 @@
   }
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -68,4 +69,3 @@ main {
   padding: 10px 20px;
   z-index: 1000;
 }
-
