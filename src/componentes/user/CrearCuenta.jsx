@@ -116,16 +116,16 @@ function CrearCuenta() {
                 <MDBRow className='justify-content-center align-items-center m-5'>
                     <MDBCard>
                         <MDBCardBody className='px-4'>
-                            <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Crear tu cuenta</h3>
+                            <h3 className="fw-bold mb-4 pb-2 pb-md-0 mb-md-5">Crea tu cuenta</h3>
                             <MDBRow>
                                 <MDBCol md='6'>
                                     <MDBInput wrapperClass='mb-4' label='Imagen' size='lg' accept="image/*" name="profilePhotoUrl" type='file' onChange={manejarCambioImagen} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Username' size='lg' name="username" type='text' onChange={manejadorInput} />
+                                    <MDBInput wrapperClass='mb-4' label='Usuario' size='lg' name="username" type='text' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Password' size='lg' name="password" type='password' onChange={manejadorInput} />
+                                    <MDBInput wrapperClass='mb-4' label='Contraseña' size='lg' name="password" type='password' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
                                     <MDBInput wrapperClass='mb-4' label='Nombres' size='lg' name="firstName" type='text' onChange={manejadorInput} />
@@ -134,19 +134,19 @@ function CrearCuenta() {
                                     <MDBInput wrapperClass='mb-4' label='Apellidos' size='lg' name="lastName" type='text' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Email' size='lg' name="email" type='email' onChange={manejadorInput} />
+                                    <MDBInput wrapperClass='mb-4' label='Correo electrónico' size='lg' name="email" type='email' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Role' size='lg' name="role" type='text' onChange={manejadorInput} />
+                                    <MDBInput wrapperClass='mb-4' label='Rol' size='lg' name="role" type='text' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
                                     <MDBInput wrapperClass='mb-4' label='Posicion' size='lg' name="position" type='text' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Numero de telefono' size='lg' name="phoneNumber" type='number' onChange={manejadorInput} />
+                                    <MDBInput wrapperClass='mb-4' label='Numero de teléfono' size='lg' name="phoneNumber" type='number' onChange={manejadorInput} />
                                 </MDBCol>
                                 <MDBCol md='6'>
-                                    <MDBInput wrapperClass='mb-4' label='Fecha de nacimiento' size='lg' name="birthDate" type='text' placeholder="YYYY-MM-DD" onChange={manejadorInput} />
+                                    <MDBInput wrapperClass='mb-4' label='Fecha de nacimiento' size='lg' name="birthDate" type='text' placeholder="AAAA-MM-DD" onChange={manejadorInput} />
                                 </MDBCol>
                             </MDBRow>
                             <MDBBtn className="mb-4 w-50 gradient-custom-2" size='lg' onClick={manejadorBoton}>Registrar</MDBBtn>

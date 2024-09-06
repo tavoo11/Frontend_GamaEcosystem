@@ -4,28 +4,33 @@ body {
 
 .main-page {
   padding-top: 60px; /* Altura del navbar */
-    
+
   background-color: aliceblue;
   background: white;
-  
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, #2d3fc8, #515fc78c, #36a0dd, #1ec1da);
-  
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, #4c24eea4, #2d2adf, #14a1d0, #1b87aa);
-  
-  
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  /* background: -webkit-linear-gradient(
+    to right,
+    #2d3fc8,
+    #515fc78c,
+    #36a0dd,
+    #1ec1da
+  ); */
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  /* background: linear-gradient(to right, #4c24eea4, #2d2adf, #14a1d0, #1b87aa); */
+
   @media (min-width: 768px) {
     .gradient-form {
       height: 100vh !important;
     }
   }
-  @media (min-width: 769px) {
+  /* @media (min-width: 769px) {
     .gradient-custom-2 {
-      border-top-right-radius: .3rem;
-      border-bottom-right-radius: .3rem;
+      border-top-right-radius: 0.3rem;
+      border-bottom-right-radius: 0.3rem;
     }
-  }
+  } */
 }
 
 .main-container {
@@ -34,7 +39,8 @@ body {
   margin: 0 10%; /* Márgenes laterales del 10% */
 }
 
-.sidebar, .right-sidebar {
+.sidebar,
+.right-sidebar {
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
@@ -59,7 +65,11 @@ body {
   width: 20%;
 }
 
-.activity-feed-content, .blog, .following, .complete-profile, .latest-updates {
+.activity-feed-content,
+.blog,
+.following,
+.complete-profile,
+.latest-updates {
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;

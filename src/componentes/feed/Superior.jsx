@@ -77,7 +77,7 @@ const Superior = () => {
     <header>
       <nav className="navbar">
         <div className="navbar-left">
-          <h1>Horizon</h1>
+          <h1>GamaEcosystem</h1>
         </div>
         <div className="navbar-right">
           <ul className="nav-icons">
@@ -101,8 +101,8 @@ const Superior = () => {
                 <img
                   src={user.profilePhotoUrl}
                   className="rounded-circle"
-                  height="45"
-                  width="45"
+                  height="50"
+                  width="50"
                   alt="Avatar"
                   loading="lazy"
                 />
