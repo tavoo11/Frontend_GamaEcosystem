@@ -93,9 +93,13 @@ function Perfil () {
                             </div>
                             <br />
                             <div className="p-4 text-black" style={{ backgroundColor: '#f8f9fa' }}>
-                                <MDBBtn outline color="dark" style={{ height: '36px', width: '150px', overflow: 'visible' }} onClick={BotonPerfil}>
+                                <MDBBtn outline color="dark" style={{ height: 'auto', width: 'auto', margin: 10}} onClick={BotonPerfil}>
                                     Registrar Plantas<i class="bi bi-file-plus-fill"></i>
                                 </MDBBtn>
+                                
+                            <MDBBtn outline color="dark" style={{ height: 'auto', width: 'auto', overflow: 'visible',  }} onClick={() => navigate("/Principal")}>
+                                Página Principal
+                            </MDBBtn>
                         <div className="d-flex justify-content-end text-center py-1">
                         <div>
                             <MDBCardText className="mb-1 h5">25</MDBCardText>
