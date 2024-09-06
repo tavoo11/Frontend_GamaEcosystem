@@ -24,7 +24,7 @@ const PhotoFollow = () => {
 
   return (
     <div className="following">
-      <h5>Pronosticos</h5>
+      <h5>Pronósticos</h5>
       <div className="following-list">
         {user.following && user.following.length > 0 ? (
           user.following.map((follower) => (
@@ -41,7 +41,7 @@ const PhotoFollow = () => {
             </div>
           ))
         ) : (
-          <p>No sigues a nadie aún.</p>
+          <p>Aún no sigues a nadie.</p>
         )}
       </div>
     </div>

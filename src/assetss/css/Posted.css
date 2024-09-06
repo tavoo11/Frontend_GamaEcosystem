@@ -11,13 +11,13 @@
 }
 
 .task-text {
-  font-family: 'Arial', sans-serif; /* Puedes cambiarlo a cualquier fuente que prefieras */
+  font-family: "Arial", sans-serif; /* Puedes cambiarlo a cualquier fuente que prefieras */
   font-size: 1.2rem; /* Tamaño de la fuente */
   color: #0d3955; /* Color de la letra */
   text-align: center; /* Alineación del texto */
   margin: 20px 0; /* Márgenes superiores e inferiores */
   padding: 80px; /* Espaciado interno */
-  background-color: #d2bef4; /* Fondo claro para resaltar el texto */
+  background-color: #09ff0036; /* Fondo claro para resaltar el texto */
   border-radius: 5px; /* Bordes redondeados */
   box-shadow: 0 4px 8px rgba(52, 157, 238, 0.1); /* Sombra ligera para dar un efecto de profundidad */
 }
@@ -29,7 +29,7 @@
 }
 
 .post-description {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 1rem;
   color: #666666;
   opacity: 0.8;
@@ -37,7 +37,7 @@
 }
 
 .post-date {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 0.9rem;
   color: #888888;
   opacity: 0.7;
@@ -45,7 +45,7 @@
 }
 
 .post-type {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 0.9rem;
   color: #999999;
   opacity: 0.6;
@@ -53,7 +53,7 @@
 }
 
 .post-title {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   font-size: 1.1rem;
   font-weight: bold;
   color: #333333;
@@ -133,7 +133,3 @@
   cursor: pointer;
   margin-right: 15px;
 }
-
-
-
-
