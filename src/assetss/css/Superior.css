@@ -57,8 +57,8 @@
   position: relative;
   top: -10px;
   left: -10px;
-  color: rgb(63, 11, 185);
-  background-color: aqua;
+  color: rgb(255, 255, 255);
+  background-color: rgb(0, 126, 6);
 }
 
 .bi {
@@ -75,7 +75,7 @@
   text-decoration: none;
 }
 
-.dropdown-menu a{
+.dropdown-menu a {
   list-style: none;
   text-decoration: none;
   font-family: Arial, Helvetica, sans-serif;

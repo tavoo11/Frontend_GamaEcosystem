@@ -108,7 +108,7 @@ const Superior = () => {
                 />
               </a>
               <ul className="dropdown-menu">
-                <li><a href="#" onClick={handleLogout}>Logout</a></li>
+                <li><a href="#" onClick={handleLogout}>Cerrar sesión</a></li>
               </ul>
             </li>
           </ul>

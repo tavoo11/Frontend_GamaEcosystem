@@ -112,7 +112,7 @@ export default function NavBar({ photoProfile }) {
                     <MDBDropdownItem link>My Profile</MDBDropdownItem>
                     <MDBDropdownItem link>Settings</MDBDropdownItem>
                     <MDBDropdownItem link onClick={logout}>
-                      Logout
+                      Cerrar sesión
                     </MDBDropdownItem>
                   </MDBDropdownMenu>
                 </MDBDropdown>

@@ -94,20 +94,20 @@ const CreatePost = ({ type, onClose }) => {
                             <MDBRow>
                                 <MDBCol md='12' className='mt-4'>
                                     {form.type === 'image' && (
-                                        <MDBInput wrapperClass='mb-4' label='Subir Imagen' size='lg' accept="image/*" name="content" type='file' onChange={manejarCambioArchivo} />
+                                        <MDBInput wrapperClass='mb-4' label='Subir Imagen' size='md' accept="image/*" name="content" type='file' onChange={manejarCambioArchivo} />
                                     )}
                                     {form.type === 'video' && (
-                                        <MDBInput wrapperClass='mb-4' label='Subir Video' size='lg' accept="video/*" name="content" type='file' onChange={manejarCambioArchivo} />
+                                        <MDBInput wrapperClass='mb-4' label='Subir Video' size='md' accept="video/*" name="content" type='file' onChange={manejarCambioArchivo} />
                                     )}
                                     {form.type === 'text' && (
-                                        <MDBInput wrapperClass='mb-4' label='Contenido del Post' size='lg' name="content" type='textarea' onChange={manejadorInput} />
+                                        <MDBInput wrapperClass='mb-4' label='Contenido del Post' size='md' name="content" type='textarea' onChange={manejadorInput} />
                                     )}
                                 </MDBCol>
                                 <MDBCol md='12'>
-                                    <MDBInput wrapperClass='mb-4' label='Título del Post' size='lg' name="title" type='text' onChange={manejadorInput} />
+                                    <MDBInput wrapperClass='mb-4' label='Título del Post' size='md' name="title" type='text' onChange={manejadorInput} />
                                 </MDBCol>
                                 </MDBRow>
-                            <MDBBtn className="mb-4 w-50 gradient-custom-2" size='lg' onClick={manejadorBoton}>Registrar</MDBBtn>
+                            <MDBBtn className="mb-4 w-50 gradient-custom-2" size='md' onClick={manejadorBoton}>Registrar</MDBBtn>
                         </MDBCardBody>
                     </MDBCard>
                 </MDBRow>
