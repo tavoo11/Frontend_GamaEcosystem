@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
 import '../../assetss/css/Posted.css';
-import jwtDecode from 'jwt-decode';
+import { NotificationContext } from '../context/NotificationContext';
 import Axios from '../../Axios';
+import CreateObservation from './CreateObservation';
+import jwtDecode from 'jwt-decode';
+import io from 'socket.io-client';
 
 const Posted = () => {
-  const [tasks, setTasks] = useState([]);
+  const { tasks, setTasks } = useContext(NotificationContext);
+  const [currentTaskId, setCurrentTaskId] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [plantNeeds, setPlantNeeds] = useState({});
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const pk = jwtDecode(token).userId.toString();
-    console.log(pk, "este es el id del usuario")
+
     if (token) {
       const config = {
         headers: {
@@ -24,71 +29,144 @@ const Posted = () => {
           const data = response.data;
           const tasksWithDefaults = data.map(task => ({
             ...task,
-            description: parseDescription(task.description),
-            likes: [],
-            comments: []
+            description: parseDescription(task.description)
           }));
           setTasks(tasksWithDefaults);
-          console.log("Task aquí: ", data)
+
+          // Obtener necesidades de las plantas
+          const plantNeedsIds = [...new Set(data.map(task => task.plantNeeds.id))];
+          const fetchPlantNeeds = plantNeedsIds.map(plantNeedsId =>
+            Axios.get(`http://localhost:4000/plant-needs/${plantNeedsId}`, config)
+              .then(response => ({ plantNeedsId, needs: response.data }))
+          );
+
+          Promise.all(fetchPlantNeeds).then(results => {
+            const needsByPlantNeedsId = results.reduce((acc, { plantNeedsId, needs }) => {
+              acc[plantNeedsId] = needs;
+              return acc;
+            }, {});
+            setPlantNeeds(needsByPlantNeedsId);
+          });
         })
         .catch(err => console.log("Error al traer las tareas", err));
     }
+  }, [setTasks]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userId = jwtDecode(token).userId.toString();
+    const socket = io('http://localhost:4000', { query: { userId } });
+
+    socket.on('task-created', (task) => {
+      console.log('Nueva tarea recibida:', task);
+      const parsedTask = {
+        ...task,
+        description: parseDescription(task.description),
+      };
+      setTasks(prev => [parsedTask, ...prev]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
-  // Función para decodificar y mostrar información meteorológica
   const parseDescription = (description) => {
     try {
       const descriptionText = description.split("Condiciones meteorológicas:")[0].trim();
       const conditionsText = description.split("Condiciones meteorológicas:")[1];
+
+      if (!conditionsText) {
+        return {
+          description: descriptionText,
+          weather: {
+            temperature: 'No disponible',
+            precipitation: 'No disponible',
+            windSpeed: 'No disponible',
+          }
+        };
+      }
+
       const weatherData = JSON.parse(conditionsText);
-      const temperature = weatherData.data.find(item => item.parameter === 't_2m:C').coordinates[0].dates[0].value;
-      const precipitation = weatherData.data.find(item => item.parameter === 'precip_1h:mm').coordinates[0].dates[0].value;
-      const windSpeed = weatherData.data.find(item => item.parameter === 'wind_speed_10m:ms').coordinates[0].dates[0].value.toString();
-      const windSpeedTwoDigits = windSpeed.slice(0, 2);
+      const currentWeather = weatherData.current;
 
-
-      // Definir el umbral de precipitación
-      const precipitationThreshold = 10; // mm
-
-      // Calcular la humedad relativa estimada
-      const estimatedHumidityRelative = Math.min((precipitation * 100) / precipitationThreshold, 100);
-
-      // Convertir la velocidad del viento a km/h
-      const windSpeedKmh = windSpeed * 3.6;
+      const temperature = currentWeather?.temp_c ?? 'No disponible';
+      const precipitation = currentWeather?.precip_mm ?? 'No disponible';
+      const windSpeed = currentWeather?.wind_kph ?? 'No disponible';
 
       return {
         description: descriptionText,
         weather: {
           temperature,
           precipitation,
-          windSpeed: windSpeedKmh, // Mostrar velocidad del viento en km/h
-          estimatedHumidityRelative,
-          windSpeedTwoDigits
+          windSpeed: windSpeed.toFixed(2),
         }
       };
     } catch (error) {
       console.log("Error parsing description:", error);
-      return description;
+      return {
+        description: description,
+        weather: {
+          temperature: 'No disponible',
+          precipitation: 'No disponible',
+          windSpeed: 'No disponible',
+        }
+      };
     }
+  };
+
+  const handleObservationClick = (task) => {
+    setSelectedTask(task);
+    setCurrentTaskId(task.id);
+  };
+
+  const closeObservationForm = () => {
+    setCurrentTaskId(null);
   };
 
   return (
     <div className='task-container'>
-      {tasks.map((task) => {
+      {tasks.map((task, index) => {
+        if (!task || !task.plantNeeds || !task.plantNeeds.id) {
+          console.log(`La tarea en el índice ${index} no tiene plantNeeds o id`);
+          return null;
+        }
         const formattedDate = new Date(task.createdAt).toLocaleDateString();
         const formattedTime = new Date(task.createdAt).toLocaleTimeString();
+        const needs = plantNeeds[task.plantNeeds.id] || {};
 
         return (
-          <div key={task.id} className="task-container">
+          <div key={`${task.id}-${index}`} className="task-container">
             <div className="task-content">
               <p className="task-text">{task.description.description}</p>
+              <p className="task-date">
+                <strong>Fecha y Hora de Creación:</strong> {formattedDate} {formattedTime}
+              </p>
               <p className="task-weather">
                 <strong>Condiciones Meteorológicas:</strong><br />
-                Temperatura: {task.description.weather.temperature} °C<br />
-                Precipitación: {task.description.weather.precipitation} mm<br />
-                Velocidad del Viento: {task.description.weather.windSpeedTwoDigits} km/h<br />
-                Humedad: {task.description.weather.estimatedHumidityRelative} %
+                {task.description.weather ? (
+                  <>
+                    Temperatura: {task.description.weather.temperature} °C<br />
+                    Precipitación: {task.description.weather.precipitation} mm<br />
+                    Velocidad del Viento: {task.description.weather.windSpeed} km/h<br />
+                  </>
+                ) : (
+                  <span>No hay datos meteorológicos disponibles.</span>
+                )}
               </p>
+              <p className="plant-needs">
+                <strong>Necesidades de la Planta:</strong><br />
+                Requisito de Agua: {needs.waterRequirement} litros por semana<br />
+                Temperatura de: {needs.minTemperature} °C a {needs.maxTemperature} °C<br />
+                Humedad Requerida: {needs.humidityRequirement} %<br />
+                Velocidad del Viento de: {needs.minWindSpeed} km/h a {needs.maxWindSpeed} km/h<br />
+                Precipitación Máxima: {needs.maxPrecipitation} mm
+              </p>
+
+              <button onClick={() => handleObservationClick(task)}>Anotar Observaciones</button>
+              {currentTaskId === task.id && (
+                <CreateObservation task={selectedTask} onClose={closeObservationForm} />
+              )}
             </div>
           </div>
         );

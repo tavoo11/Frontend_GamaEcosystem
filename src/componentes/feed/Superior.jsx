@@ -1,77 +1,29 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import io from 'socket.io-client';
-import jwtDecode from 'jwt-decode';
 import '../../assetss/css/Superior.css';
+import { NotificationContext } from '../context/NotificationContext';
 import { UserContext } from '../context/UserContext';
 
-const SOCKET_SERVER_URL = 'http://localhost:4000';
-
 const Superior = () => {
+  const { notifications, setNotifications } = useContext(NotificationContext); // Cambia setTasks a setNotifications
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
-  const socketRef = useRef(null);
-  const notificationsRef = useRef(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    const { userId } = jwtDecode(token);  // Obtén el ID del usuario del token
-
-    const socket = io(SOCKET_SERVER_URL, {
-      query: { userId: userId.toString() }
-    });
-
-    socketRef.current = socket;
-
-    socket.on('connect', () => {
-      console.log(`Conectado al servidor de WebSocket como usuario ${userId}`);
-    });
-
-    socket.on('receiveNotification', (notification) => {
-      console.log('Notificación recibida del servidor:', notification);
-      setNotifications((prevNotifications) => [...prevNotifications, notification]);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  const toggleNotifications = (event) => {
+    event.stopPropagation(); 
+    setShowNotifications(!showNotifications);
+    
+    if (showNotifications) {
+      // Si se está ocultando, puedes marcar las notificaciones como leídas
+      setNotifications([]);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
   };
-
-  const toggleNotifications = () => {
-    setShowNotifications(!showNotifications);
-    if (!showNotifications) {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const { userId } = jwtDecode(token);
-        if (socketRef.current) {
-          socketRef.current.emit('markNotificationsAsRead', userId);  // Marca las notificaciones como leídas
-        }
-        setNotifications([]);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
-        setShowNotifications(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   return (
     <header>
@@ -89,9 +41,11 @@ const Superior = () => {
                 )}
               </a>
               {showNotifications && (
-                <ul className="dropdown-menu" ref={notificationsRef}>
+                <ul className="dropdown-menu">
                   {notifications.map((notification, index) => (
-                    <li key={index}>{notification.message}</li>
+                    <li key={index} onClick={() => setNotifications(prev => prev.filter((_, i) => i !== index))}>
+                      {notification.message}
+                    </li>
                   ))}
                 </ul>
               )}
@@ -116,6 +70,6 @@ const Superior = () => {
       </nav>
     </header>
   );
-}
+};
 
 export default Superior;

@@ -6,19 +6,20 @@ import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-d
 import CrearCuenta from './componentes/user/CrearCuenta.jsx';
 import Match from './componentes/Match.jsx';
 import Perfil from './componentes/user/Perfil.jsx';
-import CreatePost from './componentes/posts/CreatePost.jsx';
 import Principal from './componentes/feed/Principal.jsx';
 import Following from './componentes/user/Following.jsx';
 import Profiles from './componentes/user/Profiles.jsx';
 import { UserProvider } from '../src/componentes/context/UserContext.jsx';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { NotificationProvider } from './componentes/context/NotificationContext.jsx';
 
 
 
 function App() {
   return (
     <UserProvider>
+      <NotificationProvider>
     <React.Fragment>
       <Router>
         <Routes>
@@ -26,7 +27,6 @@ function App() {
           <Route path="/crear" element={<CrearCuenta />}></Route>
           <Route path='/following' element= {<Following />}></Route>
           <Route path='/principal' element = {<Principal />}></Route>
-          <Route path="/crear-post" element={<CreatePost />}></Route>
           <Route path="/match"  element={<Match />}></Route>
           <Route path="/perfil" element={<Perfil />} ></Route>
           <Route path='/profile/:id' element= {<Profiles />}></Route>
@@ -35,6 +35,7 @@ function App() {
       </Router>
       <ToastContainer />
     </React.Fragment>
+    </NotificationProvider>
     </UserProvider>
   );
 }
