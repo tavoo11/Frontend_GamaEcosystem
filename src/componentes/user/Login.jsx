@@ -82,6 +82,7 @@ function Login() {
           <div className="d-flex flex-column justify-content-center h-100 mb-4">
             <div className="text-black px-3 py-4 p-md-5 mx-md-4">
               <h4 className="mb-4">GamaEcosystem</h4>
+              <img src={`${process.env.PUBLIC_URL}/Animation.gif`} style={{img : 'cover'}} />
               <p className="mb-0">
                 GamaEcosystem es una aplicación dedicada al manejo de plantas y jardines. Te permite registrar y organizar tus plantas, así como recibir consejos y recordatorios para su cuidado. Además, podrás compartir tus experiencias y conocimientos con otros amantes de la jardinería en nuestra comunidad. ¡Únete a GamaEcosistem y descubre un mundo verde lleno de vida!
               </p>

@@ -44,7 +44,7 @@ const Superior = () => {
                 <ul className="dropdown-menu">
                   {notifications.map((notification, index) => (
                     <li key={index} onClick={() => setNotifications(prev => prev.filter((_, i) => i !== index))}>
-                      {notification.message}
+                      {notification.message.slice(0, 85)}
                     </li>
                   ))}
                 </ul>

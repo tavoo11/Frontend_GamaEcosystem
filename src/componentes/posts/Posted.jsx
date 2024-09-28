@@ -10,7 +10,6 @@ const Posted = () => {
   const { tasks, setTasks } = useContext(NotificationContext);
   const [currentTaskId, setCurrentTaskId] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [plantNeeds, setPlantNeeds] = useState({});
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,21 +31,6 @@ const Posted = () => {
             description: parseDescription(task.description)
           }));
           setTasks(tasksWithDefaults);
-
-          // Obtener necesidades de las plantas
-          const plantNeedsIds = [...new Set(data.map(task => task.plantNeeds.id))];
-          const fetchPlantNeeds = plantNeedsIds.map(plantNeedsId =>
-            Axios.get(`http://localhost:4000/plant-needs/${plantNeedsId}`, config)
-              .then(response => ({ plantNeedsId, needs: response.data }))
-          );
-
-          Promise.all(fetchPlantNeeds).then(results => {
-            const needsByPlantNeedsId = results.reduce((acc, { plantNeedsId, needs }) => {
-              acc[plantNeedsId] = needs;
-              return acc;
-            }, {});
-            setPlantNeeds(needsByPlantNeedsId);
-          });
         })
         .catch(err => console.log("Error al traer las tareas", err));
     }
@@ -58,13 +42,22 @@ const Posted = () => {
     const socket = io('http://localhost:4000', { query: { userId } });
 
     socket.on('task-created', (task) => {
-      console.log('Nueva tarea recibida:', task);
-      const parsedTask = {
-        ...task,
-        description: parseDescription(task.description),
-      };
-      setTasks(prev => [parsedTask, ...prev]);
+      try {
+        const parsedTask = {
+          ...task,
+          description: parseDescription(task.description),
+        };
+        
+        if (parsedTask.description && parsedTask.description.weather) {
+          setTasks(prev => [parsedTask, ...prev]);
+        } else {
+          console.warn("La tarea recibida no tiene datos meteorológicos completos", task);
+        }
+      } catch (error) {
+        console.error("Error procesando la tarea recibida por el socket:", error);
+      }
     });
+    
 
     return () => {
       socket.disconnect();
@@ -83,6 +76,9 @@ const Posted = () => {
             temperature: 'No disponible',
             precipitation: 'No disponible',
             windSpeed: 'No disponible',
+            humidity: 'No disponible',
+            cloud: 'No disponible',
+            uv: 'No disponible',
           }
         };
       }
@@ -93,6 +89,9 @@ const Posted = () => {
       const temperature = currentWeather?.temp_c ?? 'No disponible';
       const precipitation = currentWeather?.precip_mm ?? 'No disponible';
       const windSpeed = currentWeather?.wind_kph ?? 'No disponible';
+      const humidity = currentWeather?.humidity ?? 'No disponible';
+      const cloud = currentWeather?.cloud ?? 'No disponible';
+      const uv = currentWeather?.uv ?? 'No disponible';
 
       return {
         description: descriptionText,
@@ -100,6 +99,9 @@ const Posted = () => {
           temperature,
           precipitation,
           windSpeed: windSpeed.toFixed(2),
+          humidity,
+          cloud,
+          uv,
         }
       };
     } catch (error) {
@@ -110,6 +112,9 @@ const Posted = () => {
           temperature: 'No disponible',
           precipitation: 'No disponible',
           windSpeed: 'No disponible',
+          humidity: 'No disponible',
+          cloud: 'No disponible',
+          uv: 'No disponible'
         }
       };
     }
@@ -133,36 +138,70 @@ const Posted = () => {
         }
         const formattedDate = new Date(task.createdAt).toLocaleDateString();
         const formattedTime = new Date(task.createdAt).toLocaleTimeString();
-        const needs = plantNeeds[task.plantNeeds.id] || {};
+        const needs = task.plantNeeds || {};
 
+        const weather = task.description?.weather || {
+          temperature: 'No disponible',
+          precipitation: 'No disponible',
+          windSpeed: 'No disponible',
+          humidity: 'No disponible',
+          cloud: 'No disponible',
+          uv: 'No disponible',
+        };
+      
         return (
-          <div key={`${task.id}-${index}`} className="task-container">
-            <div className="task-content">
-              <p className="task-text">{task.description.description}</p>
-              <p className="task-date">
-                <strong>Fecha y Hora de Creación:</strong> {formattedDate} {formattedTime}
-              </p>
-              <p className="task-weather">
-                <strong>Condiciones Meteorológicas:</strong><br />
-                {task.description.weather ? (
-                  <>
-                    Temperatura: {task.description.weather.temperature} °C<br />
-                    Precipitación: {task.description.weather.precipitation} mm<br />
-                    Velocidad del Viento: {task.description.weather.windSpeed} km/h<br />
-                  </>
-                ) : (
-                  <span>No hay datos meteorológicos disponibles.</span>
-                )}
-              </p>
-              <p className="plant-needs">
-                <strong>Necesidades de la Planta:</strong><br />
-                Requisito de Agua: {needs.waterRequirement} litros por semana<br />
-                Temperatura de: {needs.minTemperature} °C a {needs.maxTemperature} °C<br />
-                Humedad Requerida: {needs.humidityRequirement} %<br />
-                Velocidad del Viento de: {needs.minWindSpeed} km/h a {needs.maxWindSpeed} km/h<br />
-                Precipitación Máxima: {needs.maxPrecipitation} mm
-              </p>
+          <div key={`${task.id}-${index}`} className="task-content">
+            <div className="weather-section">
+              <div className="weather-info">
+                <div className="weather-icon"><img src={`${process.env.PUBLIC_URL}/RS5Y.gif`} className="weather-icon" /></div>
+                Tarea disponible
+                <div className="temperature">{weather.temperature || 'No disponible'}°C </div>
+              </div>
+              <div className="precipitation">
+                Precipitación: {weather.precipitation} mm
+              </div>
+              <div className="precipitation">
+                Humedad: {weather.humidity} %
+              </div>
+              <div className="precipitation">
+                Nubosidad: {weather.cloud} %
+              </div>
+              <div className="precipitation">
+                Radiacion Ultravioleta: {weather.uv} uv
+              </div>
+              <div className="precipitation">
+                Vel Viento: {weather.windSpeed} Km/h
+              </div>
+            </div>
 
+            <div className="plant-section">
+              <div className="plant-info">
+                <div className="plant-name">Especie: {task.plant.species}</div>
+                <div className="plant-name">Lote: {task.plant.tag}</div>
+                <div className="plant-needs">
+                  <strong>Necesidades de la Planta:</strong><br />
+                  Agua: {needs.waterRequirement} litros por semana<br />
+                  Temp.: {needs.minTemperature} °C a {needs.maxTemperature} °C<br />
+                  Humedad: {needs.humidityRequirement} %<br />
+                </div>
+              </div>
+            </div>
+
+            <div className="plant-section">
+              <div className="plant-info">
+                <div className="plant-needs">
+                  <strong>Tarea a realizar:</strong><br />
+                  Tarea: {task.description.description} <br />
+                  
+                </div>
+              </div>
+            </div>
+
+            <div className="footer-section">
+              <div className="date-time">
+                Fecha: {formattedDate}<br />
+                Hora: {formattedTime}
+              </div>
               <button onClick={() => handleObservationClick(task)}>Anotar Observaciones</button>
               {currentTaskId === task.id && (
                 <CreateObservation task={selectedTask} onClose={closeObservationForm} />

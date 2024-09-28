@@ -1,25 +1,101 @@
+.dashboard {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+}
+
+.weather-section, .plant-section, .footer-section {
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.weather-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.weather-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #f1f1f1; /* Fondo temporal para el ícono del clima */
+  border-radius: 50%;
+}
+
+.temperature {
+  font-size: 36px;
+  font-weight: bold;
+  color: #0d3955;
+}
+
+.precipitation {
+  font-size: 14px;
+  color: #666666;
+}
+
+.plant-info {
+  font-family: "Arial", sans-serif;
+  font-size: 14px;
+  color: #333333;
+}
+
+.plant-needs {
+  font-size: 14px;
+  color: #0d3955;
+}
+
+.date-time {
+  font-size: 14px;
+  color: #888888;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #00cc66;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #00994d;
+}
+
+/* Manteniendo tus estilos previos */
 .task-container {
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow: hidden; /* Eliminar el scroll */
+  overflow: hidden;
   display: flex;
-  flex-direction: column; /* Apilar elementos en una sola columna */
-  width: 100%; /* Aumentar el ancho del post-container */
+  flex-direction: column;
+  width: 100%;
 }
 
 .task-text {
-  font-family: "Arial", sans-serif; /* Puedes cambiarlo a cualquier fuente que prefieras */
-  font-size: 1.2rem; /* Tamaño de la fuente */
-  color: #0d3955; /* Color de la letra */
-  text-align: center; /* Alineación del texto */
-  margin: 20px 0; /* Márgenes superiores e inferiores */
-  padding: 80px; /* Espaciado interno */
-  background-color: #09ff0036; /* Fondo claro para resaltar el texto */
-  border-radius: 5px; /* Bordes redondeados */
-  box-shadow: 0 4px 8px rgba(52, 157, 238, 0.1); /* Sombra ligera para dar un efecto de profundidad */
+  font-family: "Arial", sans-serif;
+  font-size: 1.2rem;
+  color: #0d3955;
+  text-align: center;
+  margin: 20px 0;
+  padding: 80px;
+  background-color: #09ff0036;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(52, 157, 238, 0.1);
 }
 
 .post-header {
@@ -36,19 +112,11 @@
   margin: 10px 0;
 }
 
-.post-date {
+.post-date, .post-type {
   font-family: "Arial", sans-serif;
   font-size: 0.9rem;
   color: #888888;
   opacity: 0.7;
-  margin: 0;
-}
-
-.post-type {
-  font-family: "Arial", sans-serif;
-  font-size: 0.9rem;
-  color: #999999;
-  opacity: 0.6;
   margin: 0;
 }
 
@@ -100,6 +168,7 @@
   border-radius: 20px;
   display: flex;
 }
+
 .post-image {
   width: 100%;
   height: 320px;
