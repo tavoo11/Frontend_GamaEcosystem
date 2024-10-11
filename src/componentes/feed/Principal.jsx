@@ -1,6 +1,5 @@
 import React from 'react'
 import Blog from './Blog';
-import PhotoFollow from '../user/PhotoFollow';
 import LatestUpdates from '../user/LatestUpdates';
 import ActivityFeed from './ActivityFeed';
 import '../../assetss/css/Principal.css';
@@ -13,7 +12,6 @@ const Principal = () => {
     <div className="main-container">
     <div className="sidebar">
       <Blog />
-      <PhotoFollow />
     </div>
     <div className="activity-feed">
       <ActivityFeed />

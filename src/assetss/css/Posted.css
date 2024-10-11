@@ -1,204 +1,128 @@
-.dashboard {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  overflow: hidden;
+/* Estilo global */
+body {
+  font-family: 'Poppins', sans-serif; /* Fuente más llamativa */
+  color: #333;
 }
 
-.weather-section, .plant-section, .footer-section {
-  padding: 15px;
-  background-color: rgba(255, 255, 255, 0.9);
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif; /* Asegurarse que los títulos usen la nueva fuente */
+  color: #006400; /* Un color verde más oscuro para títulos */
+  margin-bottom: 10px;
+}
+
+p, div, span {
+  font-family: 'Arial', sans-serif; /* El texto general mantiene 'Arial' para legibilidad */
+  color: #444;
+}
+
+/* Estilo del contenido de las tareas */
+.task-content {
+  background-color: #f0f9f0;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif; /* Fuente más atractiva */
+  color: #333;
   margin-bottom: 20px;
+}
+
+/* Sección de clima */
+.weather-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e6f7e6;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 15px;
 }
 
 .weather-info {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .weather-icon {
-  width: 50px;
-  height: 50px;
-  background-color: #f1f1f1; /* Fondo temporal para el ícono del clima */
-  border-radius: 50%;
+  width: 30px;
+  height: 30px;
 }
 
 .temperature {
-  font-size: 36px;
+  font-size: 1.5em;
   font-weight: bold;
-  color: #0d3955;
+  color: #008080; /* Verde azulado */
 }
 
-.precipitation {
-  font-size: 14px;
-  color: #666666;
+/* Sección de plantas */
+.plant-section {
+  background-color: #f0fff0;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-left: 4px solid #228b22;
 }
 
 .plant-info {
-  font-family: "Arial", sans-serif;
-  font-size: 14px;
-  color: #333333;
-}
-
-.plant-needs {
-  font-size: 14px;
-  color: #0d3955;
-}
-
-.date-time {
-  font-size: 14px;
-  color: #888888;
   margin-bottom: 10px;
 }
 
+.plant-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #006400; /* Color verde más oscuro */
+}
+
+.footer-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.date-time {
+  color: #666;
+}
+
+/* Botón */
 button {
-  background-color: #00cc66;
+  background-color: #228b22;
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #00994d;
+  background-color: #006400; /* Verde más oscuro al pasar el cursor */
 }
 
-/* Manteniendo tus estilos previos */
-.task-container {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+/* Precipitación */
+.precipitation {
+  color: #444;
 }
 
-.task-text {
-  font-family: "Arial", sans-serif;
-  font-size: 1.2rem;
-  color: #0d3955;
-  text-align: center;
-  margin: 20px 0;
-  padding: 80px;
-  background-color: #09ff0036;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(52, 157, 238, 0.1);
+/* Estilo para asegurar que los íconos tengan el mismo tamaño */
+.icon {
+  width: 24px; /* Ajusta el tamaño según sea necesario */
+  height: 24px;
+  vertical-align: middle; /* Alinea los íconos con el texto */
+  margin-right: 10px; /* Añade un pequeño margen a la derecha para separarlos del texto */
 }
 
-.post-header {
+/* Alineación del contenido */
+.weather-info, .plant-needs {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  gap: 5px; /* Añade un espacio entre los íconos y el texto */
 }
 
-.post-description {
-  font-family: "Arial", sans-serif;
-  font-size: 1rem;
-  color: #666666;
-  opacity: 0.8;
-  margin: 10px 0;
+.weather-section, .plant-section {
+  margin-bottom: 16px; /* Espacio entre las secciones */
 }
 
-.post-date, .post-type {
-  font-family: "Arial", sans-serif;
-  font-size: 0.9rem;
-  color: #888888;
-  opacity: 0.7;
-  margin: 0;
-}
-
-.post-title {
-  font-family: "Arial", sans-serif;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #333333;
-  opacity: 0.9;
-  margin: 10px 0;
-}
-
-.profile-pic {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.post-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.post-author {
-  font-weight: bold;
-}
-
-.post-time {
-  font-size: 12px;
-  color: #888;
-}
-
-.task-content {
-  margin-bottom: 10px;
-}
-
-.post-input {
-  flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  display: flex;
-}
-
-.post-button {
-  flex-grow: 1;
-  padding: 10px;
-  border-radius: 20px;
-  display: flex;
-}
-
-.post-image {
-  width: 100%;
-  height: 320px;
-  border-radius: 5px;
-}
-
-.post-footer {
-  display: flex;
-  flex-direction: column;
-}
-
-.post-likes {
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 10px;
-}
-
-.post-actions {
+.weather-icon, .precipitation {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.post-actions i {
-  margin-right: 5px;
-}
-
-.post-action {
-  font-size: 14px;
-  color: #888;
-  cursor: pointer;
-  margin-right: 15px;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../../assetss/css/ActivityFeed.css';
-import Posted from '../posts/Posted';
+import Posted from '../tasks/Tasks';
 import Axios from '../../Axios';
 import jwt_decode from 'jwt-decode';
 

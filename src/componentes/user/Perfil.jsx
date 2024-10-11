@@ -11,7 +11,6 @@ import { MDBCol,
      MDBCardImage, 
      MDBBtn, MDBTypography } from 'mdb-react-ui-kit';
 import Axios from 'axios';
-import Post from "../posts/Post";
 import Superior from "../feed/Superior";
 import { UserContext } from '../context/UserContext';
 
@@ -119,7 +118,6 @@ function Perfil () {
                             <MDBCardText className="font-italic mb-0">Celular: {form.phoneNumber}</MDBCardText>
                         </div>
                         </div>
-                        <Post />
                     </MDBCardBody>
                     </div>
                     </MDBCard>
